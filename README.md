@@ -2,6 +2,7 @@ Projeto de Software — Arquitetura, SOLID, Clean Code e Padrões de Projeto
 📋 Descrição
 
 Este projeto foi desenvolvido como parte de um trabalho acadêmico com o objetivo de aplicar, de forma prática, os conceitos de Arquitetura de Software, Princípios SOLID, Clean Code e Padrões de Projeto (GoF).
+
 🎯 Objetivos
 
     Desenvolver um software completo com arquitetura bem definida.
