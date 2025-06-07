@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - HabitFlow{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Greeting -->
+    <div class="dashboard-greeting">
+        <h1>{{ greeting }}, {{ user.email }}! 🌟</h1>
+        <p>Como estão seus hábitos hoje?</p>
+    </div>
+
+    <!-- Progress Card -->
+    <div class="card progress-card mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h3 class="h5 mb-0">Progresso de Hoje</h3>
+            <span class="text-muted">{{ stats.today_completed }} de {{ stats.today_total }} hábitos</span>
+        </div>
+        
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-buttons mb-4">
+        <a href="{{ url_for('dashboard', filter='all') }}" class="btn {{ 'btn-primary' if filter == 'all' else 'btn-outline-secondary' }}">Todos</a>
+        <a href="{{ url_for('dashboard', filter='completed') }}" class="btn {{ 'btn-primary' if filter == 'completed' else 'btn-outline-secondary' }}">Concluídos</a>
+        <a href="{{ url_for('dashboard', filter='pending') }}" class="btn {{ 'btn-primary' if filter == 'pending' else 'btn-outline-secondary' }}">Pendentes</a>
+        {% for category in categories %}
+        <a href="{{ url_for('dashboard', filter=category) }}" class="btn {{ 'btn-primary' if filter == category else 'btn-outline-secondary' }}">{{ category }}</a>
+        {% endfor %}
+    </div>
+
+    <!-- Add Habit Button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h4 mb-0">Meus Hábitos</h2>
+        <a href="{{ url_for('new_habit') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Adicionar Hábito
+        </a>
+    </div>
+
+    <!-- Habits List -->
+    {% if habits %}
+    <div class="habit-list">
+        {% for habit in habits %}
+        <div class="card habit-item-card mb-3 {{ 'completed' if habit.checked_today else '' }}">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <div class="form-check me-3">
+                        <input type="checkbox" class="form-check-input check-in-checkbox" id="habit-check-{{ habit.id }}"
+                            {{ 'checked' if habit.checked_today else '' }}
+                            data-habit-id="{{ habit.id }}"
+                            {{ 'disabled' if habit.checked_today else '' }}>
+                    </div>
+                    <div class="habit-details">
+                        <h5 class="card-title h6 mb-1 {{ 'text-decoration-line-through' if habit.checked_today else '' }}">{{ habit.name }}</h5>
+                        {% if habit.description %}
+                        <small class="text-muted">{{ habit.description }}</small>
+                        {% endif %}
+                        <div class="mt-1">
+                            <span class="badge bg-{{ habit.category | category_color }} me-2">{{ habit.category }}</span>
+                            <small class="text-muted"><i class="far fa-clock"></i> {{ habit.ideal_time | time if habit.ideal_time else '-' }}</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="habit-actions">
+                     {% if not habit.checked_today %}
+                    <a href="{{ url_for('edit_habit', habit_id=habit.id) }}" class="btn btn-sm btn-outline-secondary me-2">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <form action="{{ url_for('delete_habit', habit_id=habit.id) }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Tem certeza que deseja excluir este hábito?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card text-center p-5">
+        <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+        <h3 class="h5">Nenhum hábito encontrado</h3>
+        <p class="text-muted mb-0">Comece adicionando seu primeiro hábito!</p>
+    </div>
+    {% endif %}
+
+    <!-- Stats -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <h3 class="h5 mb-3">Estatísticas</h3>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <h4 class="h6 text-muted mb-2">Total de Hábitos</h4>
+                        <p class="h3 mb-0">{{ stats.total_habits }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <h4 class="h6 text-muted mb-2">Concluídos Hoje</h4>
+                        <p class="h3 mb-0">{{ stats.today_completed }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <h4 class="h6 text-muted mb-2">Taxa de Conclusão</h4>
+                        <p class="h3 mb-0">{{ "%.0f"|format(stats.completion_rate) }}%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    /* Add any specific overrides or new styles here */
+    .dashboard-greeting-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .dashboard-greeting-subtitle {
+        font-size: 1rem;
+        color: #6c757d; /* Muted text color */
+        margin-bottom: 20px;
+    }
+
+    .progress-card {
+        background-color: #e9f5ff; /* Light blue background, adjust if gradient needed */
+        border: 1px solid #cce5ff; /* Light blue border */
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .progress-bar {
+        background-color: #007bff; /* Bootstrap primary blue */
+    }
+
+    .filter-buttons .btn {
+        margin-right: 10px;
+        margin-bottom: 10px; /* Space between buttons */
+        border-radius: 20px; /* Pill shape */
+        padding: 5px 15px;
+    }
+
+    .filter-buttons .btn-outline-secondary {
+        color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    .filter-buttons .btn-outline-secondary.active,
+    .filter-buttons .btn-outline-secondary:hover {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .habit-item-card {
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        transition: all 0.2s ease-in-out;
+    }
+
+    .habit-item-card:hover {
+        box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+
+    .habit-item-card.completed {
+        background-color: #e0f7e9; /* Lighter green background */
+        border-color: #b9f2cd; /* Lighter green border */
+    }
+
+    .habit-item-card .card-body {
+        padding: 15px;
+    }
+
+    .habit-item-card .form-check-input {
+        margin-top: 0.3em;
+        margin-right: 10px;
+        flex-shrink: 0; /* Prevent shrinking */
+    }
+
+     .habit-item-card .form-check-input:checked {
+        background-color: #28a745; /* Green color when checked */
+        border-color: #28a745;
+    }
+
+     .habit-item-card .form-check-input:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+    }
+
+
+    .habit-item-card .badge {
+        vertical-align: middle;
+        font-size: 0.75rem;
+        padding: .3em .6em;
+    }
+
+    .habit-details small i {
+        margin-right: 5px;
+    }
+
+    .btn-ghost {
+        background-color: transparent;
+        border: none;
+        color: #6c757d; /* Muted color */
+        padding: .375rem .75rem;
+    }
+
+    .btn-ghost:hover {
+        color: #5a6268; /* Darker muted on hover */
+        background-color: rgba(108, 117, 125, 0.1); /* Subtle background on hover */
+    }
+
+    .add-habit-button i {
+        margin-right: 5px;
+    }
+
+    .text-muted-foreground {
+        color: #6c757d; /* Bootstrap muted color */
+    }
+
+    .text-decoration-line-through {
+        text-decoration: line-through;
+    }
+
+    /* Override default Bootstrap container padding */
+    .container.mx-auto.px-4.py-6 {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+    }
+
+    .min-width-0 {
+        min-width: 0; /* Allow content to shrink */
+    }
+
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle check-in via AJAX
+        document.querySelectorAll('.check-in-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const habitId = this.dataset.habitId;
+                const isChecked = this.checked;
+                const card = this.closest('.habit-item-card');
+                const title = card.querySelector('.card-title');
+                const description = card.querySelector('.text-muted');
+
+                // Optimistically update UI
+                if (isChecked) {
+                    card.classList.add('completed');
+                    if (title) title.classList.add('text-decoration-line-through');
+                    this.disabled = true; // Disable checkbox after checking in
+                    // Optional: hide edit/delete buttons
+                    const actions = card.querySelector('.habit-actions');
+                     if (actions) actions.style.display = 'none';
+
+                } else {
+                     // This else block is less likely with the current disabling logic, but good practice
+                    card.classList.remove('completed');
+                     if (title) title.classList.remove('text-decoration-line-through');
+                    this.disabled = false;
+                     const actions = card.querySelector('.habit-actions');
+                     if (actions) actions.style.display = '';
+                }
+
+                // Send AJAX request
+                fetch(`{{ url_for('check_in_habit', habit_id=0) }}`.replace('/0', '/' + habitId), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    // You might send additional data like notes if you add that feature
+                    // body: new URLSearchParams({ 'notes': '' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Check-in successful:', data.message);
+                         // You might want to refresh a stats counter here if displayed
+                    } else {
+                        console.error('Check-in failed:', data.error);
+                         // Revert UI change if backend failed
+                         if (isChecked) {
+                             card.classList.remove('completed');
+                             if (title) title.classList.remove('text-decoration-line-through');
+                             this.checked = false; // Uncheck the checkbox
+                              this.disabled = false; // Re-enable checkbox
+                               const actions = card.querySelector('.habit-actions');
+                               if (actions) actions.style.display = '';
+                         }
+                        alert('Erro ao realizar check-in: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Network error:', error);
+                     // Revert UI change on network error
+                     if (isChecked) {
+                         card.classList.remove('completed');
+                         if (title) title.classList.remove('text-decoration-line-through');
+                         this.checked = false;
+                          this.disabled = false;
+                           const actions = card.querySelector('.habit-actions');
+                           if (actions) actions.style.display = '';
+                     }
+                    alert('Erro de rede ao realizar check-in.');
+                });
+            });
+        });
+    });
+</script>
+{% endblock %} 
