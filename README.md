@@ -1,3 +1,75 @@
+Projeto de Software — Arquitetura, SOLID, Clean Code e Padrões de Projeto
+📋 Descrição
+
+Este projeto foi desenvolvido como parte de um trabalho acadêmico com o objetivo de aplicar, de forma prática, os conceitos de Arquitetura de Software, Princípios SOLID, Clean Code e Padrões de Projeto (GoF).
+
+🎯 Objetivos
+
+    Desenvolver um software completo com arquitetura bem definida.
+
+    Aplicar explicitamente os princípios SOLID.
+
+    Garantir boas práticas de Clean Code.
+
+    Implementar e justificar a utilização de ao menos 3 Padrões de Projeto GoF.
+
+    Produzir documentação completa, diagramas UML e disponibilizar o código-fonte de forma organizada.
+
+
+✅ Tema: Gerenciador de Tarefas CLI (ToDo App)
+
+Descrição:
+Um programa de linha de comando onde o usuário pode:
+
+    Criar tarefas com título, descrição, prioridade e prazo.
+
+    Listar tarefas (todas, pendentes, concluídas).
+
+    Marcar como concluída.
+
+    Remover tarefas.
+
+    Filtrar por prioridade ou data.
+
+📐 Arquitetura: Clean Architecture (ou MVC para simplificação)
+
+    Domain Layer: entidades como Tarefa, interfaces dos repositórios.
+
+    Application Layer: casos de uso (AdicionarTarefa, ListarTarefas, etc).
+
+    Infrastructure Layer: persistência simples em JSON ou SQLite.
+
+    Presentation Layer: CLI, interage com o usuário.
+
+🔧 Padrões de Projeto GoF Aplicáveis:
+
+    Command Pattern
+
+        Para encapsular comandos como "criar tarefa", "listar tarefas", etc.
+
+        Facilita a extensão e manutenção (Open/Closed Principle).
+
+    Strategy Pattern
+
+        Para estratégias de ordenação ou filtragem (por data, prioridade).
+
+    Singleton Pattern
+
+        Para o repositório de tarefas (uma única instância gerenciando os dados).
+
+🧱 Princípios SOLID na prática:
+
+    S (Single Responsibility): cada classe com uma única função: entidade, repositório, UI, etc.
+
+    O (Open/Closed): comandos e filtros podem ser estendidos sem mudar código existente.
+
+    L (Liskov): substituição de implementações de persistência ou filtragem sem quebrar o programa.
+
+    I (Interface Segregation): separar contratos como ITarefaRepository, ICommand.
+
+    D (Dependency Inversion): CLI depende de abstrações (ICommand, IRepository), não de implementações diretas.
+
+
 # Cadastro de Pessoas
 
 Uma aplicação web simples para cadastro e gerenciamento de pessoas, desenvolvida com Flask e PostgreSQL.
@@ -37,13 +109,6 @@ Uma aplicação web simples para cadastro e gerenciamento de pessoas, desenvolvi
    ```bash
    pip install -r requirements.txt
    ```
-5. Configure as variáveis de ambiente:
-   - Crie um arquivo `.env` na raiz do projeto
-   - Adicione as seguintes variáveis:
-     ```
-     DATABASE_URL=sua_url_do_postgresql
-     SECRET_KEY=sua_chave_secreta
-     ```
 
 ## Executando a Aplicação
 
@@ -66,3 +131,4 @@ Uma aplicação web simples para cadastro e gerenciamento de pessoas, desenvolvi
 ├── requirements.txt  # Dependências do projeto
 └── README.md         # Este arquivo
 ``` 
+    
