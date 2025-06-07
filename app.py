@@ -328,56 +328,6 @@ def check_in_habit(habit_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/edit_profile', methods=['GET', 'POST'])
-@login_required
-def edit_profile():
-    # Fetch the user directly using session
-    user_id = session.get('user_id')
-    current_user = User.query.get(user_id)
-
-    if not current_user:
-        flash('Por favor, faça login para acessar esta página.', 'warning')
-        return redirect(url_for('login'))
-
-    if request.method == 'POST':
-        email = request.form.get('email')
-        current_password = request.form.get('current_password')
-        new_password = request.form.get('new_password')
-        confirm_password = request.form.get('confirm_password')
-        
-        # Verify current password
-        if not current_user.check_password(current_password):
-            flash('Senha atual incorreta', 'danger')
-            return redirect(url_for('edit_profile'))
-        
-        # Check if email is already taken by another user
-        existing_user = User.query.filter(User.email == email, User.id != current_user.id).first()
-        if existing_user:
-            flash('Este email já está em uso', 'danger')
-            return redirect(url_for('edit_profile'))
-        
-        # Update email
-        current_user.email = email
-        
-        # Update password if provided
-        if new_password:
-            if new_password != confirm_password:
-                flash('As senhas não coincidem', 'danger')
-                return redirect(url_for('edit_profile'))
-            current_user.set_password(new_password)
-        
-        try:
-            db.session.commit()
-            flash('Perfil atualizado com sucesso!', 'success')
-            return redirect(url_for('dashboard'))
-        except Exception as e:
-            db.session.rollback()
-            flash('Erro ao atualizar perfil', 'danger')
-            print(f"Erro ao atualizar perfil: {e}")
-            return redirect(url_for('edit_profile'))
-    
-    return render_template('edit_profile.html', user=current_user)
-
 if __name__ == '__main__':
     print("\n=== INICIANDO APLICAÇÃO ===")
     print("Acesse: http://localhost:5000")

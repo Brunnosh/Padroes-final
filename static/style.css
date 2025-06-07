@@ -1,476 +1,476 @@
-/* Reset some default browser styles if needed */
-/* body { margin: 0; padding: 0; } */
-
-/* Custom styles for the login/register page based on the image */
-body {
-    background-color: #1e1e1e; /* Cor de fundo escura para combinar com o resto do tema */
+/* ==========================================================================
+   1. PALETA DE CORES E VARIÁVEIS GLOBAIS
+   ========================================================================== */
+   :root {
+    /* Cores primárias (Azul) */
+    --primary: #4a90e2;
+    --primary-darker: #357abd;
+    --primary-bg-subtle: rgba(74, 144, 226, 0.1);
+  
+    /* Tons de fundo (Dark Theme) */
+    --bg-dark: #121212;         /* Fundo principal mais escuro e neutro */
+    --bg-surface: #1e1e1e;       /* Fundo para "superfícies" como cards e navbar */
+    --bg-surface-alt: #2c2c2c;   /* Fundo alternativo para abas, hovers, etc. */
+  
+    /* Cores de texto */
+    --text-light: #e0e0e0;       /* Texto principal sobre fundo escuro */
+    --text-light-muted: #b0b0b0; /* Mais claro para melhor contraste no fundo escuro */
+    --text-dark: #1e1e1e;        /* Texto principal sobre fundo claro (se necessário) */
+    --text-dark-muted: #6c757d;  /* Texto sutil sobre fundo claro */
+  
+    /* Cores de Feedback (Alertas) */
+    --success: #28a745;
+    --success-bg: rgba(40, 167, 69, 0.15);
+    --danger: #dc3545;
+    --danger-bg: rgba(220, 53, 69, 0.15);
+    --info: #17a2b8;
+    --info-bg: rgba(23, 162, 184, 0.15);
+    --warning: #ffc107;
+    --warning-bg: rgba(255, 193, 7, 0.15);
+  
+    /* Bordas */
+    --border-color: #3a3a3a;
+    --border-color-focus: var(--primary);
+  }
+  
+  
+  /* ==========================================================================
+     2. ESTILOS BASE E GLOBAIS
+     ========================================================================== */
+  body {
+    background-color: var(--bg-dark); /* CORRIGIDO */
     min-height: 100vh;
-    padding: 20px; /* Add some padding */
-}
-
-.login-container {
-    width: 100%;
-    max-width: 500px; /* Increased max width for a larger container */
-    margin-top: 0; /* Removed vertical adjustment */
-    margin-bottom: 20px; /* Add some space below if needed, adjust as per image */
-    text-align: center; /* Center text elements like title */
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.app-title {
-    color: #4a90e2; /* Vibrant blue color for the title */
-    font-size: 3.5rem; /* Larger font size */
-    font-weight: bold;
-    margin-bottom: 40px;
-}
-
-.app-subtitle {
-    color: #b0b0b0; /* Lighter muted text color for dark background */
-    font-size: 1rem;
-    margin-bottom: 30px; /* Space below subtitle */
-}
-
-.auth-card {
-    background-color: #2c2c2c; /* Dark grey background for the card */
+    padding: 20px;
+    color: var(--text-light); /* CORRIGIDO */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-light); /* Default for headings on dark background */
+  }
+  
+  /* Estilo de card genérico (AGORA ESCURO) */
+  .card {
+    background-color: var(--bg-surface);
+    color: var(--text-light); /* Default text color for dark cards */
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    margin-bottom: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* More prominent shadow in dark theme */
+    box-shadow: none;
+  }
+  
+  /* Headings inside generic dark cards */
+  .card h1, .card h2, .card h3, .card h4, .card h5, .card h6 {
+    color: var(--text-light); /* Headings light on dark cards */
+  }
+  
+  
+  /* ==========================================================================
+     3. NAVBAR
+     ========================================================================== */
+  .navbar {
+    background-color: var(--bg-surface) !important;
+  }
+  
+  .navbar-brand,
+  .navbar-text,
+  .navbar .nav-link {
+    color: var(--text-light) !important;
+  }
+  
+  .navbar .nav-link:hover {
+    color: var(--primary) !important;
+  }
+  
+  
+  /* ==========================================================================
+     4. LAYOUT DE AUTENTICAÇÃO (LOGIN / CADASTRO)
+     ========================================================================== */
+  .login-container {
+    width: 100%;
+    max-width: 450px;
+    margin: 2rem auto;
+    text-align: center;
+  }
+  
+  .app-title {
+    color: var(--primary);
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .app-subtitle {
+    color: var(--text-light-muted);
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+  
+  .auth-card {
+    background-color: var(--bg-surface);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     overflow: hidden;
-    /* Adjusted for the new design with tabs */
-    padding-top: 0; 
-}
-
-.auth-tabs {
+    color: var(--text-light);
+    text-align: left;
+    padding: 0; /* Removido padding do card base */
+    border: none;
+  }
+  
+  .auth-tabs {
     display: flex;
-    /* Removed bottom border here, will add indicator to active tab */
-    border-bottom: none;
-    background-color: #3a3a3a; /* Slightly lighter dark background for tabs area */
-    border-top-left-radius: 8px; /* Match card corner */
-    border-top-right-radius: 8px; /* Match card corner */
-}
-
-.navbar {
-    background-color: #1f1f1f !important; /* Darker navbar background in both modes */
-}
-
-.navbar-brand,
-.navbar-text,
-.navbar .nav-link {
-    color: #e0e0e0 !important; /* Light text for dark navbar */
-}
-
-.navbar .nav-link:hover {
-    color: #ffffff !important; /* Brighter on hover */
-}
-
-.auth-tabs a {
+  }
+  
+  .auth-tabs a {
     flex-grow: 1;
     text-align: center;
     padding: 15px 0;
     text-decoration: none;
-    color: #b0b0b0; /* Light grey color for inactive tab */
+    color: var(--text-light-muted);
     font-weight: 500;
-    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
-    position: relative; /* Needed for the active indicator */
-    top: 1px; /* Slight adjustment to align with potential border */
-}
-
-.auth-tabs a.active {
-    color: #ffffff; /* White color for active tab text */
-    background-color: #2c2c2c; /* Match card background for active tab */
-    border-bottom: 2px solid #4a90e2; /* Vibrant blue indicator */
-    /* Rounded top corners only for the active tab to blend with card */
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-}
-
-.auth-tabs a:hover {
-     color: #ffffff; /* White hover color */
-     background-color: #4a4a4a; /* Darker grey on hover */
-}
-
-.auth-form-container {
-    padding: 30px; /* Adjusted padding around the form content */
-    text-align: left; /* Align form content to the left */
-}
-
-.form-label {
-    text-align: left;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .auth-tabs a:hover {
+    color: var(--text-light);
+    background-color: var(--bg-surface-alt);
+  }
+  
+  .auth-tabs a.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    background-color: transparent;
+  }
+  
+  .auth-form-container {
+    padding: 30px;
+  }
+  
+  .auth-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .auth-card p {
+    font-size: 1rem;
+    color: var(--text-light-muted);
+    margin-bottom: 1.5rem;
+  }
+  
+  
+  /* ==========================================================================
+     5. FORMULÁRIOS (DARK THEME)
+     ========================================================================== */
+  .form-label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px; /* Mais espaço */
     font-weight: 500;
-    color: #b0b0b0; /* Light grey color for labels */
-}
-
-.form-control {
-    border-radius: 4px;
-    border: 1px solid #555; /* Darker border color */
-    background-color: #3a3a3a; /* Dark background for input fields */
-    color: #e0e0e0; /* Light text color for input */
-    padding: 10px 15px;
-    width: 100%; /* Revert to 100% width within padding */
-    margin: 0 0 15px 0; /* Adjust margin */
+    color: var(--text-light);
+  }
+  
+  .form-control {
+    border-radius: 6px; /* Mais moderno */
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-surface-alt);
+    color: var(--text-light);
+    padding: 12px 15px; /* Mais confortável */
+    width: 100%;
+    margin-bottom: 1rem; /* Padrão 16px */
     display: block;
-}
-
-.form-control:focus {
-    border-color: #4a90e2; /* Vibrant blue border on focus */
-    box-shadow: 0 0 0 0.25rem rgba(74, 144, 226, 0.4); /* Vibrant blue shadow on focus */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .form-control:focus {
+    border-color: var(--border-color-focus);
+    box-shadow: 0 0 0 0.25rem rgba(74, 144, 226, 0.25);
     outline: none;
-}
-
-.form-control::placeholder {
-    color: #888; /* Slightly lighter grey for placeholder text */
-    opacity: 1; /* Ensure placeholder is visible */
-}
-
-.btn-primary {
-    background-color: #4a90e2; /* Vibrant blue for button */
-    border-color: #4a90e2;
-    color: white;
-    padding: 10px 20px;
+    background-color: var(--bg-surface-alt);
+  }
+  
+  .form-control::placeholder {
+    color: var(--text-light-muted);
+    opacity: 1;
+  }
+  
+  /* Específico para o seletor de cores, caso ele seja um input */
+  input[type="color"] {
+    padding: 5px;
+    height: 48px; /* Alinha com outros inputs */
+  }
+  input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+  input[type="color"]::-webkit-color-swatch {
+    border: none;
     border-radius: 4px;
-    width: 100%; /* Full width button within padding */
+  }
+  
+  select.form-control,
+  select.form-select {
+    background-color: var(--bg-surface-alt); /* Gray background for dropdowns */
+    color: var(--text-light); /* Light text for dropdowns */
+    border-color: var(--border-color); /* Darker gray border */
+  }
+  
+  
+  /* ==========================================================================
+     6. BOTÕES
+     ========================================================================== */
+  .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
     font-size: 1rem;
     font-weight: 500;
-    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-}
-
-.btn-primary:hover {
-    background-color: #357ABD; /* Darker shade on hover */
-    border-color: #357ABD;
-}
-
-.text-decoration-none {
-    text-decoration: none;
-}
-
-.text-muted {
-    color: #6c757d !important;
-}
-
-/* Adjust Bootstrap alert styles if necessary */
-.alert {
-    margin-top: 1rem; /* Space above alerts */
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+  
+  .btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--primary-darker);
+    border-color: var(--primary-darker);
+  }
+  
+  /* NOVO BOTÃO SECUNDÁRIO */
+  .btn-secondary {
+    background-color: transparent;
+    border-color: var(--border-color);
+    color: var(--text-light);
+  }
+  
+  .btn-secondary:hover {
+    background-color: var(--bg-surface-alt);
+    border-color: var(--text-light-muted);
+  }
+  
+  .btn-ghost {
+    background-color: transparent;
+    border: none;
+    color: var(--primary);
+  }
+  
+  .btn-ghost:hover {
+    color: var(--primary-darker);
+    background-color: var(--primary-bg-subtle);
+  }
+  
+  
+  /* ==========================================================================
+     7. ALERTAS (MODERNIZADOS)
+     ========================================================================== */
+  .alert {
+    margin-top: 1rem;
     border-radius: 5px;
-}
-
-/* Add styles for the dashboard and other pages later */
-
-/* Dashboard specific styles */
-.dashboard-greeting-title {
+    padding: 1rem;
+    border: 1px solid transparent;
+  }
+  
+  .alert-success {
+    background-color: var(--success-bg);
+    border-color: var(--success);
+    color: var(--success);
+  }
+  
+  .alert-danger {
+    background-color: var(--danger-bg);
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+  
+  .alert-info {
+    background-color: var(--info-bg);
+    border-color: var(--info);
+    color: var(--info);
+  }
+  
+  .alert-warning {
+    background-color: var(--warning-bg);
+    border-color: var(--warning);
+    color: var(--warning);
+  }
+  
+  
+  /* ==========================================================================
+     8. DASHBOARD
+     ========================================================================== */
+  .dashboard-greeting-title {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 5px;
-}
-
-.dashboard-greeting-subtitle {
+  }
+  
+  .dashboard-greeting-subtitle {
     font-size: 1rem;
-    color: #6c757d; /* Muted text color */
+    color: var(--text-light-muted);
     margin-bottom: 20px;
-}
+  }
+  
+  .progress-bar {
+    background-color: var(--primary);
+  }
+  
+  .filter-buttons .btn {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+    background-color: transparent;
+  }
+  
+  .filter-buttons .btn.active,
+  .filter-buttons .btn:hover {
+    color: #ffffff;
+    background-color: var(--primary);
+    border-color: var(--primary);
+  }
+  
+  .habit-item-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .habit-item-card:hover {
+    background-color: var(--bg-surface-alt);
+    border-color: var(--text-light-muted);
+  }
+  
+  .habit-item-card.completed {
+    opacity: 0.6;
+    background-color: var(--bg-surface-alt);
+  }
+  
+  .habit-item-card.completed .habit-details h5 {
+    text-decoration: line-through;
+  }
+  
+  .habit-details {
+    flex-grow: 1;
+    margin: 0 15px;
+    text-align: left;
+  }
+  
+  .habit-details h5 {
+    margin-bottom: 0.25rem;
+  }
+  
+  .habit-details p {
+    margin-bottom: 0;
+    color: var(--text-light-muted);
+    font-size: 0.9rem;
+  }
+  
+  .habit-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .habit-actions .btn-ghost {
+    margin-left: 10px;
+  }
+  
+  
+  /* ==========================================================================
+     9. MODAL / FORMULÁRIO DE HÁBITO (NOVO)
+     ========================================================================== */
+  .habit-form-container {
+    max-width: 600px;
+    margin: 2rem auto;
+  }
+  
+  .habit-form-container .card-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .habit-form-container .card-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .habit-form-container .card-body {
+    padding: 1.5rem;
+  }
+  
+  .habit-form-container .card-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: var(--bg-surface-alt);
+    border-top: 1px solid var(--border-color);
+  }
+  
+  
+  /* ==========================================================================
+     10. UTILITÁRIOS E AJUSTES FINAIS
+     ========================================================================== */
+  .text-decoration-none {
+    text-decoration: none;
+  }
+  
+  /* Muted text styles */
+  .text-muted {
+    color: var(--text-light-muted); /* Default muted for dark backgrounds */
+  }
+  
+  .card .text-muted {
+    color: var(--text-light-muted); /* Muted text inside generic dark cards */
+  }
+  
+  .progress-card .text-muted {
+    color: var(--text-dark-muted) !important; /* Muted text inside light progress card, forced dark */
+  }
+  
+  .auth-card .text-center.mt-4 p {
+    margin: 0;
+    text-align: center;
+    color: var(--text-light-muted);
+  }
+  
+  .auth-card .text-center.mt-4 a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  
+  .auth-card .text-center.mt-4 a:hover {
+    text-decoration: underline;
+  }
+  
+  .container.mx-auto.px-4.py-6 {
+    padding: 1.5rem !important;
+  }
+  
+  .min-width-0 {
+    min-width: 0;
+  }
 
-.progress-card {
-    background-color: #2c2c2c; /* Dark grey background for cards */
-    border: 1px solid #3a3a3a; /* Darker border */
-    color: #e0e0e0; /* Light text for dark cards */
+  /* Specific style for progress card (light) */
+  .progress-card {
+    background-color: #ffffff; /* White background for progress card */
+    border: 1px solid #e0e0e0; /* Light grey border */
+    color: #1e1e1e; /* Dark text for progress card */
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
+  }
 
-.progress-bar {
-    background-color: #4a90e2; /* Vibrant blue accent */
-}
-
-.filter-buttons .btn {
-    margin-right: 10px;
-    margin-bottom: 10px; /* Space between buttons */
-    border-radius: 20px; /* Pill shape */
-    padding: 5px 15px;
-    font-size: 0.9rem; /* Slightly smaller font for pills */
-}
-
-.filter-buttons .btn-outline-secondary {
-    color: #1e1e1e; /* Dark text */
-    border-color: #cccccc; /* Light grey border */
-    background-color: #ffffff; /* White background */
-}
-
-.filter-buttons .btn-outline-secondary.active,
-.filter-buttons .btn-outline-secondary:hover {
-    color: #ffffff; /* White text on active/hover */
-    background-color: #4a90e2; /* Vibrant blue */
-    border-color: #4a90e2; /* Vibrant blue */
-}
-
-/* Ensure space between badge and edit button */
-.habit-item-card .badge + .btn-ghost {
-    margin-left: 10px;
-    color: #fff;
-}
-
-/* Adjust spacing within the habit card body */
-.habit-item-card .card-body {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px;
-}
-
-.habit-details {
-    flex-grow: 1; /* Allow details to take up space */
-    margin-right: 15px; /* Space between details and actions */
-    text-align: left;
-}
-
-.habit-actions {
-    flex-shrink: 0; /* Prevent actions from shrinking */
-    display: flex;
-    align-items: center;
-}
-
-.habit-item-card {
-    border-radius: 8px;
-    margin-bottom: 15px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    transition: all 0.2s ease-in-out;
-    background-color: #2c2c2c; /* Dark grey for habit cards */
-    border: 1px solid #3a3a3a; /* Darker border */
-    color: #e0e0e0; /* Light text for dark cards */
-}
-
-.habit-item-card:hover {
-    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-}
-
-.habit-item-card.completed {
-    background-color: #3a3a3a; /* Slightly lighter dark grey for completed */
-    border-color: #555; /* Darker border */
-}
-
-.habit-item-card .form-check-input {
-    margin-top: 0.3em;
-    margin-right: 10px;
-}
-
-.habit-item-card .badge {
-    vertical-align: middle;
-}
-
-.habit-details small i {
-    margin-right: 5px;
-}
-
-.btn-ghost {
-    background-color: transparent;
-    border: none;
-    color: #4a90e2; /* Primary color */
-    padding: .375rem .75rem;
-}
-
-.btn-ghost:hover {
-    color: #357ABD; /* Darker primary on hover */
-    background-color: rgba(74, 144, 226, 0.1); /* Subtle background on hover */
-}
-
-/* Dark Mode Styles */
-body.dark-mode {
-    background-color: #121212; /* Cor de fundo escura para o modo escuro (ainda mais escura) */
-    color: #e0e0e0; /* Cor do texto clara para o modo escuro */
-}
-
-body.dark-mode .navbar {
-    background-color: #1f1f1f !important; /* Darker navbar background */
-    border-bottom: 1px solid #333; /* Subtle border */
-}
-
-body.dark-mode .rounded {
-    background-color: #1f1f1f !important; /* Dark background for rounded elements like navbar */
-}
-
-body.dark-mode .card {
-    background-color: #1e1e1e; /* Ensure cards are dark in dark mode */
-    color: #e0e0e0; /* Light text for dark cards */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* More prominent shadow in dark mode */
-}
-
-body.dark-mode .progress-card {
-    background-color: #2c2c2c; /* Consistent dark for progress card in dark mode */
-    border-color: #444;
-}
-
-body.dark-mode .progress-bar {
-    background-color: #bb86fc; /* Accent color for progress bar in dark mode (if different) */
-}
-
-body.dark-mode .filter-buttons .btn-outline-secondary {
-    color: #1e1e1e; /* Dark text for filter buttons */
-    border-color: #cccccc;
-    background-color: #ffffff;
-}
-
-body.dark-mode .filter-buttons .btn-outline-secondary.active,
-body.dark-mode .filter-buttons .btn-outline-secondary:hover {
-    color: #ffffff;
-    background-color: #4a90e2; /* Accent color for active/hover */
-    border-color: #4a90e2;
-}
-
-body.dark-mode .habit-item-card.completed {
-    background-color: #3a3a3a; /* Consistent darker background for completed habits in dark mode */
-    border-color: #555;
-}
-
-body.dark-mode .btn-ghost {
-    color: #4a90e2; /* Accent color for ghost buttons */
-}
-
-body.dark-mode .btn-ghost:hover {
-    color: #357ABD; /* Darker accent on hover */
-    background-color: rgba(74, 144, 226, 0.1); /* Subtle background on hover */
-}
-
-body.dark-mode .form-label {
-    color: #e0e0e0; /* Light labels */
-}
-
-body.dark-mode .form-control {
-    background-color: #333; /* Dark input background */
-    color: #e0e0e0; /* Light input text */
-    border-color: #555; /* Darker border */
-}
-
-body.dark-mode select.form-control {
-    background-color: #3a3a3a; /* Dark grey background for dropdowns in dark mode */
-    color: #e0e0e0; /* Light text for dropdown options */
-    border-color: #555; /* Match input border color */
-}
-
-body.dark-mode select.form-select {
-    background-color: #3a3a3a; /* Dark grey background for form-select dropdowns in dark mode */
-    color: #e0e0e0; /* Light text for dropdown options */
-    border-color: #555; /* Match input border color */
-}
-
-body.dark-mode .form-control:focus {
-    border-color: #bb86fc; /* Accent color on focus */
-    box-shadow: 0 0 0 0.25rem rgba(187, 134, 252, 0.25); /* Accent shadow on focus */
-}
-
-body.dark-mode .alert {
-    background-color: #333; /* Dark alert background */
-    color: #e0e0e0; /* Light alert text */
-    border-color: #555;
-}
-
-body.dark-mode .alert-success {
-    background-color: #28a745; /* Keep some color for success */
-    color: #fff;
-    border-color: #28a745;
-}
-
-body.dark-mode .alert-danger {
-    background-color: #dc3545; /* Keep some color for danger */
-    color: #fff;
-    border-color: #dc3545;
-}
-
-body.dark-mode .alert-info {
-    background-color: #17a2b8; /* Keep some color for info */
-    color: #fff;
-    border-color: #17a2b8;
-}
-
-body.dark-mode .alert-warning {
-    background-color: #ffc107; /* Keep some color for warning */
-    color: #212529;
-    border-color: #ffc107;
-}
-
-/* Adjust Bootstrap classes directly if needed in dark mode */
-body.dark-mode .text-muted-foreground {
-    color: #b0b0b0 !important; /* Lighter muted text */
-}
-
-body.dark-mode .text-muted {
-    color: #b0b0b0 !important;
-}
-
-/* Auth pages specific styles */
-.auth-container {
-    max-width: 400px; /* Adjusted max width based on image */
-    margin: 2rem auto; /* Add some top/bottom margin and center */
-    padding: 0; /* Remove padding as it's handled by auth-form-container */
-}
-
-.auth-title {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.auth-title h1 {
-    color: #0d6efd;
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-}
-
-.auth-title p {
-    color: #6c757d;
-    margin-bottom: 0;
-}
-
-body.dark-mode .auth-card {
-    background-color: #2c3034;
-    border-color: #373b3e;
-}
-
-body.dark-mode .auth-title h1 {
-    color: #86b7fe;
-}
-
-body.dark-mode .auth-title p {
-    color: #adb5bd;
-}
-
-/* Add styles for the title and subtitle inside the auth-card */
-.auth-card h2 {
-    font-size: 1.5rem; /* Title inside card */
-    margin-bottom: 0.5rem;
-    text-align: left; /* Align left */
-    color: #fafafa; /* Dark color */
-}
-
-.auth-card p {
-    font-size: 1rem;
-    color: #6c757d; /* Muted color */
-    margin-bottom: 1.5rem; /* Space below subtitle */
-    text-align: left; /* Align left */
-}
-
-/* Style for the register link below the button */
-.auth-card .text-center.mt-4 p {
-     margin-bottom: 0; /* Remove extra bottom margin */
-     text-align: center; /* Center text */
-     color: #b0b0b0; /* Light grey for the surrounding text */
-}
-
-.auth-card .text-center.mt-4 a {
-     color: #4a90e2; /* Vibrant blue link color */
-     text-decoration: none;
-}
-
-.auth-card .text-center.mt-4 a:hover {
-     text-decoration: underline;
-}
-
-/* Adjust app title and subtitle spacing */
-.login-container .app-title {
-     margin-bottom: 10px; /* Reduced space below title */
-}
-
-.login-container .app-subtitle {
-     margin-bottom: 30px; /* Space below subtitle, before the card */
-}
+  /* Headings inside progress card (light background) */
+  .progress-card h1, .progress-card h2, .progress-card h3, .progress-card h4, .progress-card h5, .progress-card h6 {
+    color: #1e1e1e; /* Headings dark on light cards */
+  }
