@@ -112,7 +112,7 @@ O projeto segue rigorosamente os princípios da Clean Architecture:
 
 1. **Clone o repositório**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Brunnosh/Padroes-final.git
    cd Padroes-final
    ```
 
@@ -130,7 +130,7 @@ O projeto segue rigorosamente os princípios da Clean Architecture:
 
 1. **Clone o repositório**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Brunnosh/Padroes-final.git
    cd Padroes-final
    ```
 
