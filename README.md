@@ -156,7 +156,7 @@ O projeto segue rigorosamente os princípios da Clean Architecture:
 
 5. **Execute a aplicação**:
    ```bash
-   python run.py
+   python3 main.py
    ```
 
 ### Acesso à Aplicação
@@ -165,7 +165,7 @@ Abra seu navegador e acesse: `http://localhost:5000`
 ### Solução de Problemas
 
 **Problema: Aplicação para instantaneamente**
-- ✅ **Solução**: Use um ambiente virtual (venv)
+- ✅ **Solução**: Use um ambiente virtual (venv) e execute o script principal.
 - ✅ **Comando**: `./setup.sh` seguido de `./start.sh`
 
 **Problema: Dependências não encontradas**
@@ -174,14 +174,7 @@ Abra seu navegador e acesse: `http://localhost:5000`
 
 **Problema: Python não encontrado**
 - ✅ **Solução**: Use `python3` em vez de `python`
-- ✅ **Comando**: `python3 run.py`
-
-**Problema: Contraste/Visibilidade ruim**
-- ✅ **Solução**: Melhorias de acessibilidade implementadas
-- ✅ **CSS adicional**: `contraste-forte.css` para cards de estatísticas
-- ✅ **Página de teste**: `verificar_contraste.html` para diagnóstico
-- ✅ **Detalhes**: Veja `ACESSIBILIDADE.md`
-- ✅ **Dica**: Force refresh (Ctrl+Shift+F5) para carregar novos estilos
+- ✅ **Comando**: `python3 main.py`
 
 ## 📱 Como Usar
 
