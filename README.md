@@ -1,22 +1,22 @@
-# 📋 TaskFlow - Sistema de Gerenciamento de Tarefas
+# TaskFlow - Sistema de Gerenciamento de Tarefas
 
-## 🎯 Descrição
+## Descrição
 
 Este projeto foi desenvolvido aplicando os conceitos de **Clean Architecture**, **Princípios SOLID**, **Clean Code** e **Padrões de Projeto GoF**. O TaskFlow é um sistema web moderno para gerenciamento de tarefas que demonstra a aplicação prática desses conceitos fundamentais da engenharia de software.
 
-## ✨ Funcionalidades
+## Funcionalidades
 
-- ✅ **Autenticação segura** de usuários com hash de senhas
-- ✅ **Criação de tarefas** com título, descrição, prioridade e prazo
-- ✅ **Filtros avançados** (todas, pendentes, concluídas, por prioridade, atrasadas)
-- ✅ **Ordenação inteligente** (data, prioridade, status, alfabética)
-- ✅ **Marcação de tarefas** como concluídas
-- ✅ **Sistema de Undo/Redo** para operações
-- ✅ **Interface responsiva** com design moderno
-- ✅ **Estatísticas** de produtividade
-- ✅ **Atalhos de teclado** para navegação rápida
+-  **Autenticação segura** de usuários com hash de senhas
+-  **Criação de tarefas** com título, descrição, prioridade e prazo
+-  **Filtros avançados** (todas, pendentes, concluídas, por prioridade, atrasadas)
+-  **Ordenação inteligente** (data, prioridade, status, alfabética)
+-  **Marcação de tarefas** como concluídas
+-  **Sistema de Undo/Redo** para operações
+-  **Interface responsiva** com design moderno
+-  **Estatísticas** de produtividade
+-  **Atalhos de teclado** para navegação rápida
 
-## 🏗️ Arquitetura: Clean Architecture
+## Arquitetura: Clean Architecture
 
 O projeto segue rigorosamente os princípios da Clean Architecture:
 
@@ -42,7 +42,7 @@ O projeto segue rigorosamente os princípios da Clean Architecture:
 └── static/         # Recursos estáticos
 ```
 
-## 🔧 Padrões de Projeto GoF Implementados
+## Padrões de Projeto GoF Implementados
 
 ### 1. **Command Pattern**
 - **Localização**: `application/commands.py`
@@ -64,7 +64,7 @@ O projeto segue rigorosamente os princípios da Clean Architecture:
 - **Propósito**: Cria estratégias baseadas em tipos
 - **Classes**: `FilterStrategyFactory`, `SortStrategyFactory`
 
-## 🧱 Princípios SOLID Aplicados
+## Princípios SOLID Aplicados
 
 ### **S - Single Responsibility Principle**
 - Cada classe tem uma única responsabilidade bem definida
@@ -93,7 +93,7 @@ O projeto segue rigorosamente os princípios da Clean Architecture:
 - Injeção de dependência via `DependencyContainer`
 
 
-## 💻 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **Backend**: Python 3.8+, Flask 3.0+
 - **Banco de Dados**: SQLite (SQLAlchemy ORM)
@@ -102,7 +102,7 @@ O projeto segue rigorosamente os princípios da Clean Architecture:
 - **Padrões**: Command, Strategy, Singleton, Factory
 - **Princípios**: SOLID, Clean Code
 
-## 🚀 Como Executar
+## Como Executar
 
 ### Pré-requisitos
 - Python 3.8 ou superior
@@ -165,18 +165,18 @@ Abra seu navegador e acesse: `http://localhost:5000`
 ### Solução de Problemas
 
 **Problema: Aplicação para instantaneamente**
-- ✅ **Solução**: Use um ambiente virtual (venv) e execute o script principal.
-- ✅ **Comando**: `./setup.sh` seguido de `./start.sh`
+-  **Solução**: Use um ambiente virtual (venv) e execute o script principal.
+-  **Comando**: `./setup.sh` seguido de `./start.sh`
 
 **Problema: Dependências não encontradas**
-- ✅ **Solução**: Instale as dependências no ambiente virtual
-- ✅ **Comando**: `pip install -r requirements.txt`
+-  **Solução**: Instale as dependências no ambiente virtual
+-  **Comando**: `pip install -r requirements.txt`
 
 **Problema: Python não encontrado**
-- ✅ **Solução**: Use `python3` em vez de `python`
-- ✅ **Comando**: `python3 main.py`
+-  **Solução**: Use `python3` em vez de `python`
+-  **Comando**: `python3 main.py`
 
-## 📱 Como Usar
+## Como Usar
 
 ### 1. **Cadastro e Login**
 - Acesse a página inicial
@@ -196,7 +196,7 @@ Abra seu navegador e acesse: `http://localhost:5000`
 - `Ctrl + Z`: Desfazer última ação
 - `1, 2, 3`: Filtros rápidos
 
-## 🎨 Clean Code Aplicado
+##  Clean Code Aplicado
 
 ### **Nomenclatura Clara**
 ```python
@@ -238,7 +238,7 @@ class FilterStrategyFactory:
         return strategies.get(filter_type, AllTasksFilterStrategy())
 ```
 
-## 📊 Benefícios da Arquitetura
+##  Benefícios da Arquitetura
 
 ### **Testabilidade**
 - Dependências injetadas facilitam mocks e testes unitários
@@ -256,7 +256,7 @@ class FilterStrategyFactory:
 - Arquitetura preparada para crescimento
 - Separação clara de responsabilidades
 
-## 🧪 Exemplos de Extensibilidade
+##  Exemplos de Extensibilidade
 
 ### **Novo Filtro**
 ```python
@@ -282,22 +282,22 @@ class ArchiveTaskCommand(ICommand):
         return self._task_repository.update(task)
 ```
 
-## 📈 Métricas de Qualidade
+##  Métricas de Qualidade
 
 - **Cobertura de Testes**: Preparado para testes unitários
 - **Complexidade Ciclomática**: Baixa devido a funções pequenas
 - **Acoplamento**: Baixo devido à inversão de dependência
 - **Coesão**: Alta - cada classe tem responsabilidade única
 
-## 🏆 Conclusão
+##  Conclusão
 
 Este projeto demonstra a aplicação prática e efetiva de:
 
-- ✅ **Clean Architecture** com separação clara de camadas
-- ✅ **Padrões GoF** resolvendo problemas reais de design
-- ✅ **Princípios SOLID** garantindo código maintível e extensível  
-- ✅ **Clean Code** com código legível e bem estruturado
-- ✅ **Interface moderna** com excelente UX/UI
+-  **Clean Architecture** com separação clara de camadas
+-  **Padrões GoF** resolvendo problemas reais de design
+-  **Princípios SOLID** garantindo código maintível e extensível  
+-  **Clean Code** com código legível e bem estruturado
+-  **Interface moderna** com excelente UX/UI
 
 O TaskFlow serve como exemplo de como conceitos teóricos de engenharia de software podem ser aplicados para criar sistemas robustos, escaláveis e de alta qualidade. 
     
