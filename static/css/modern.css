@@ -1,0 +1,950 @@
+/* ===== RESET E BASE ===== */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #2d3748;
+    background-color: #f8fafc;
+}
+
+/* ===== COMPONENTES PERSONALIZADOS ===== */
+
+/* Cards aprimorados */
+.card {
+    border: none;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Navbar moderna */
+.navbar {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* Botões aprimorados */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
+    transform: translateY(-1px);
+    color: #ffffff !important;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #0e8478 0%, #2dd46b 100%) !important;
+    color: #ffffff !important;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #ee7de8 0%, #f34458 100%) !important;
+    color: #ffffff !important;
+}
+
+/* Botões outline */
+.btn-outline-primary {
+    color: #667eea !important;
+    border-color: #667eea !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #667eea !important;
+    border-color: #667eea !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-secondary {
+    color: #6c757d !important;
+    border-color: #6c757d !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-danger {
+    color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-info {
+    color: #0dcaf0 !important;
+    border-color: #0dcaf0 !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-info:hover {
+    background-color: #0dcaf0 !important;
+    border-color: #0dcaf0 !important;
+    color: #ffffff !important;
+}
+
+/* Form controls modernos */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    background-color: #ffffff !important;
+    color: #2d3748 !important;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+    background-color: #ffffff !important;
+    color: #2d3748 !important;
+}
+
+.form-control:disabled, .form-select:disabled {
+    background-color: #f7fafc !important;
+    color: #718096 !important;
+    opacity: 1;
+}
+
+.form-control-lg {
+    padding: 1rem 1.25rem;
+    font-size: 1.1rem;
+}
+
+/* Labels melhorados */
+.form-label {
+    font-weight: 600;
+    color: #2d3748 !important;
+    margin-bottom: 0.5rem;
+}
+
+/* ===== COMPONENTES ESPECÍFICOS ===== */
+
+/* Cards de estatísticas */
+.stats-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    overflow: hidden;
+    position: relative;
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: transform 0.6s ease;
+}
+
+.stats-card:hover::before {
+    transform: scale(1.2);
+}
+
+/* Cores específicas para cards de estatísticas */
+.bg-primary.text-white {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: #ffffff !important;
+}
+
+.bg-success.text-white {
+    background: linear-gradient(135deg, #38a169 0%, #48bb78 100%) !important;
+    color: #ffffff !important;
+}
+
+.bg-warning.text-white {
+    background: linear-gradient(135deg, #d69e2e 0%, #f6e05e 100%) !important;
+    color: #ffffff !important;
+}
+
+.bg-info.text-white {
+    background: linear-gradient(135deg, #0987a0 0%, #4fd1c7 100%) !important;
+    color: #ffffff !important;
+}
+
+.bg-danger.text-white {
+    background: linear-gradient(135deg, #e53e3e 0%, #fc8181 100%) !important;
+    color: #ffffff !important;
+}
+
+/* Cards de estatísticas específicos */
+.card.bg-primary.text-white .card-body,
+.card.bg-success.text-white .card-body,
+.card.bg-warning.text-white .card-body,
+.card.bg-info.text-white .card-body,
+.card.bg-danger.text-white .card-body {
+    color: #ffffff !important;
+}
+
+.card.bg-primary.text-white .card-title,
+.card.bg-success.text-white .card-title,
+.card.bg-warning.text-white .card-title,
+.card.bg-info.text-white .card-title,
+.card.bg-danger.text-white .card-title {
+    color: #ffffff !important;
+}
+
+.card.bg-primary.text-white h1,
+.card.bg-primary.text-white h2,
+.card.bg-primary.text-white h3,
+.card.bg-primary.text-white h4,
+.card.bg-primary.text-white h5,
+.card.bg-primary.text-white h6,
+.card.bg-success.text-white h1,
+.card.bg-success.text-white h2,
+.card.bg-success.text-white h3,
+.card.bg-success.text-white h4,
+.card.bg-success.text-white h5,
+.card.bg-success.text-white h6,
+.card.bg-warning.text-white h1,
+.card.bg-warning.text-white h2,
+.card.bg-warning.text-white h3,
+.card.bg-warning.text-white h4,
+.card.bg-warning.text-white h5,
+.card.bg-warning.text-white h6,
+.card.bg-info.text-white h1,
+.card.bg-info.text-white h2,
+.card.bg-info.text-white h3,
+.card.bg-info.text-white h4,
+.card.bg-info.text-white h5,
+.card.bg-info.text-white h6,
+.card.bg-danger.text-white h1,
+.card.bg-danger.text-white h2,
+.card.bg-danger.text-white h3,
+.card.bg-danger.text-white h4,
+.card.bg-danger.text-white h5,
+.card.bg-danger.text-white h6 {
+    color: #ffffff !important;
+}
+
+/* Task cards */
+.task-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid #e2e8f0;
+    background-color: #ffffff !important;
+    color: #2d3748 !important;
+}
+
+.task-card:hover {
+    border-left-color: #667eea;
+    transform: translateX(4px);
+}
+
+.task-card.completed {
+    background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%) !important;
+    border-left-color: #38a169;
+    color: #22543d !important;
+}
+
+.task-card.overdue {
+    background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%) !important;
+    border-left-color: #e53e3e;
+    color: #742a2a !important;
+}
+
+/* Priority badges */
+.badge {
+    border-radius: 6px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: #ffffff !important;
+}
+
+/* Específicos para cores de badges */
+.badge.bg-danger {
+    background-color: #e53e3e !important;
+}
+
+.badge.bg-warning {
+    background-color: #d69e2e !important;
+}
+
+.badge.bg-info {
+    background-color: #0987a0 !important;
+}
+
+.badge.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+.badge.bg-success {
+    background-color: #38a169 !important;
+}
+
+.badge.bg-primary {
+    background-color: #667eea !important;
+}
+
+/* Card titles e conteúdo */
+.card-title {
+    color: #2d3748 !important;
+}
+
+.card-text {
+    color: #4a5568 !important;
+}
+
+.card-header {
+    background-color: #f7fafc !important;
+    color: #2d3748 !important;
+}
+
+/* Filtros */
+.filter-buttons .btn {
+    border-radius: 20px;
+    margin: 0.25rem;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out;
+}
+
+/* Delays para animações sequenciais */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+
+/* ===== UTILIDADES ===== */
+
+/* Glass effect */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Gradient backgrounds */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #30cfd0 0%, #91a7ff 100%);
+}
+
+/* Shadows */
+.shadow-soft {
+    box-shadow: 0 2px 25px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-strong {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 1rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .task-card .btn-group {
+        margin-top: 1rem;
+    }
+    
+    .filter-buttons {
+        text-align: center;
+    }
+    
+    .filter-buttons .btn {
+        margin: 0.25rem 0.125rem;
+        font-size: 0.8rem;
+        padding: 0.375rem 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .display-6 {
+        font-size: 1.75rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .btn-lg {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+    }
+}
+
+/* ===== DARK MODE DESABILITADO (para melhor visibilidade) ===== */
+/* Removendo dark mode automático que estava causando problemas de contraste */
+
+/* Forçar modo claro para todos os elementos */
+body {
+    background-color: #f8fafc !important;
+    color: #2d3748 !important;
+}
+
+.card {
+    background-color: #ffffff !important;
+    color: #2d3748 !important;
+}
+
+/* Exceções para cards coloridos de estatísticas */
+.card.bg-primary,
+.card.bg-success,
+.card.bg-warning,
+.card.bg-info,
+.card.bg-danger {
+    color: #ffffff !important;
+}
+
+.card.bg-primary *,
+.card.bg-success *,
+.card.bg-warning *,
+.card.bg-info *,
+.card.bg-danger * {
+    color: #ffffff !important;
+}
+
+/* Garantir que ícones também sejam brancos nos cards coloridos */
+.card.bg-primary .fas,
+.card.bg-success .fas,
+.card.bg-warning .fas,
+.card.bg-info .fas,
+.card.bg-danger .fas,
+.card.bg-primary i,
+.card.bg-success i,
+.card.bg-warning i,
+.card.bg-info i,
+.card.bg-danger i {
+    color: #ffffff !important;
+}
+
+.navbar-dark {
+    background-color: #667eea !important;
+}
+
+.navbar-dark .navbar-brand,
+.navbar-dark .navbar-nav .nav-link {
+    color: #ffffff !important;
+}
+
+.text-muted {
+    color: #718096 !important;
+}
+
+.text-white {
+    color: #ffffff !important;
+}
+
+/* Garantir que badges tenham contraste adequado */
+.badge {
+    color: #ffffff !important;
+}
+
+.badge.bg-light {
+    color: #2d3748 !important;
+    background-color: #f7fafc !important;
+    border: 1px solid #e2e8f0;
+}
+
+/* ===== MELHORIAS DE ACESSIBILIDADE ===== */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* Reduzir animações para usuários que preferem menos movimento */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ===== CORREÇÕES DE CONTRASTE ADICIONAIS ===== */
+
+/* Dropdown menus */
+.dropdown-menu {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.dropdown-item {
+    color: #2d3748 !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #f7fafc !important;
+    color: #667eea !important;
+}
+
+/* Alerts */
+.alert {
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background-color: #f0fff4 !important;
+    border-color: #9ae6b4 !important;
+    color: #22543d !important;
+}
+
+.alert-danger {
+    background-color: #fed7d7 !important;
+    border-color: #fc8181 !important;
+    color: #742a2a !important;
+}
+
+.alert-warning {
+    background-color: #fffbeb !important;
+    border-color: #f6e05e !important;
+    color: #744210 !important;
+}
+
+.alert-info {
+    background-color: #ebf8ff !important;
+    border-color: #90cdf4 !important;
+    color: #2a4365 !important;
+}
+
+/* Tables */
+.table {
+    color: #2d3748 !important;
+}
+
+.table th {
+    background-color: #f7fafc !important;
+    color: #2d3748 !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+}
+
+.table td {
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+/* Modals */
+.modal-content {
+    background-color: #ffffff !important;
+    color: #2d3748 !important;
+}
+
+.modal-header {
+    background-color: #f7fafc !important;
+    color: #2d3748 !important;
+}
+
+/* Form text helpers */
+.form-text {
+    color: #718096 !important;
+}
+
+.invalid-feedback {
+    color: #e53e3e !important;
+}
+
+.valid-feedback {
+    color: #38a169 !important;
+}
+
+/* Links */
+a {
+    color: #667eea !important;
+}
+
+a:hover {
+    color: #5a6fd8 !important;
+}
+
+/* ===== COMPONENTES ESPECÍFICOS DO TASKFLOW ===== */
+
+/* Dashboard greeting */
+.dashboard-greeting h1 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== CORREÇÕES ESPECÍFICAS PARA CARDS DE ESTATÍSTICAS ===== */
+
+/* Cards de estatísticas com cores forçadas */
+.statistics-card-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.statistics-card-success {
+    background: linear-gradient(135deg, #38a169 0%, #48bb78 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.statistics-card-warning {
+    background: linear-gradient(135deg, #d69e2e 0%, #f6e05e 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.statistics-card-info {
+    background: linear-gradient(135deg, #0987a0 0%, #4fd1c7 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+/* Todas as crianças dos cards de estatísticas devem ser brancas */
+.statistics-card-primary *,
+.statistics-card-success *,
+.statistics-card-warning *,
+.statistics-card-info * {
+    color: #ffffff !important;
+}
+
+/* Override forçado para Bootstrap */
+.card.shadow-sm.bg-primary.text-white,
+.card.shadow-sm.bg-success.text-white,
+.card.shadow-sm.bg-warning.text-white,
+.card.shadow-sm.bg-info.text-white {
+    color: #ffffff !important;
+}
+
+.card.shadow-sm.bg-primary.text-white *,
+.card.shadow-sm.bg-success.text-white *,
+.card.shadow-sm.bg-warning.text-white *,
+.card.shadow-sm.bg-info.text-white * {
+    color: #ffffff !important;
+}
+
+/* Específico para classes Bootstrap completas */
+.card.border-0.shadow-sm.bg-primary.text-white,
+.card.border-0.shadow-sm.bg-success.text-white,
+.card.border-0.shadow-sm.bg-warning.text-white,
+.card.border-0.shadow-sm.bg-info.text-white {
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-primary.text-white *,
+.card.border-0.shadow-sm.bg-success.text-white *,
+.card.border-0.shadow-sm.bg-warning.text-white *,
+.card.border-0.shadow-sm.bg-info.text-white * {
+    color: #ffffff !important;
+}
+
+/* Específico para h-100 */
+.card.border-0.shadow-sm.bg-primary.text-white.h-100,
+.card.border-0.shadow-sm.bg-success.text-white.h-100,
+.card.border-0.shadow-sm.bg-warning.text-white.h-100,
+.card.border-0.shadow-sm.bg-info.text-white.h-100 {
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-primary.text-white.h-100 *,
+.card.border-0.shadow-sm.bg-success.text-white.h-100 *,
+.card.border-0.shadow-sm.bg-warning.text-white.h-100 *,
+.card.border-0.shadow-sm.bg-info.text-white.h-100 * {
+    color: #ffffff !important;
+}
+
+/* Progress bars */
+.progress {
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.6s ease;
+}
+
+/* Progress bar em cards coloridos */
+.card.bg-primary .progress,
+.card.bg-success .progress,
+.card.bg-warning .progress,
+.card.bg-info .progress,
+.card.bg-danger .progress {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.card.bg-primary .progress-bar,
+.card.bg-success .progress-bar,
+.card.bg-warning .progress-bar,
+.card.bg-info .progress-bar,
+.card.bg-danger .progress-bar {
+    background-color: #ffffff !important;
+}
+
+/* Forçar cores de fundo Bootstrap em cards de estatísticas */
+.bg-primary {
+    background-color: #667eea !important;
+}
+
+.bg-success {
+    background-color: #38a169 !important;
+}
+
+.bg-warning {
+    background-color: #d69e2e !important;
+}
+
+.bg-info {
+    background-color: #0987a0 !important;
+}
+
+.bg-danger {
+    background-color: #e53e3e !important;
+}
+
+/* Text white específico para overriding */
+.text-white,
+.text-white * {
+    color: #ffffff !important;
+}
+
+/* Cards com fundo colorido devem ter texto branco sempre */
+.card.bg-primary,
+.card.bg-success, 
+.card.bg-warning,
+.card.bg-info,
+.card.bg-danger {
+    background-color: var(--bs-primary, #667eea) !important;
+}
+
+.card.bg-success {
+    background-color: #38a169 !important;
+}
+
+.card.bg-warning {
+    background-color: #d69e2e !important;
+}
+
+.card.bg-info {
+    background-color: #0987a0 !important;
+}
+
+.card.bg-danger {
+    background-color: #e53e3e !important;
+}
+
+/* Toast notifications */
+.toast {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Modal melhorado */
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid #e2e8f0;
+    border-radius: 12px 12px 0 0;
+}
+
+/* Loading states */
+.btn.loading {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.btn.loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    margin: auto;
+    border: 2px solid transparent;
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Checkbox personalizado */
+.form-check-input {
+    background-color: #ffffff !important;
+    border: 2px solid #d1d5db !important;
+}
+
+.form-check-input:checked {
+    background-color: #667eea !important;
+    border-color: #667eea !important;
+}
+
+.form-check-input:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25) !important;
+}
+
+/* Input groups */
+.input-group-text {
+    background-color: #f7fafc !important;
+    border: 2px solid #e2e8f0 !important;
+    color: #2d3748 !important;
+}
+
+/* Form floating labels */
+.form-floating > label {
+    color: #718096 !important;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: #667eea !important;
+}
+
+/* Placeholder text */
+.form-control::placeholder,
+.form-select::placeholder {
+    color: #a0aec0 !important;
+    opacity: 1;
+}
+
+/* Focus states para melhor acessibilidade */
+.btn:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible {
+    outline: 2px solid #667eea !important;
+    outline-offset: 2px !important;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+} 

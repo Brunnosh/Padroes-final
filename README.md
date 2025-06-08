@@ -1,134 +1,310 @@
-Projeto de Software — Arquitetura, SOLID, Clean Code e Padrões de Projeto
-📋 Descrição
+# 📋 TaskFlow - Sistema de Gerenciamento de Tarefas
 
-Este projeto foi desenvolvido como parte de um trabalho acadêmico com o objetivo de aplicar, de forma prática, os conceitos de Arquitetura de Software, Princípios SOLID, Clean Code e Padrões de Projeto (GoF).
+## 🎯 Descrição
 
-🎯 Objetivos
+Este projeto foi desenvolvido aplicando os conceitos de **Clean Architecture**, **Princípios SOLID**, **Clean Code** e **Padrões de Projeto GoF**. O TaskFlow é um sistema web moderno para gerenciamento de tarefas que demonstra a aplicação prática desses conceitos fundamentais da engenharia de software.
 
-    Desenvolver um software completo com arquitetura bem definida.
+## ✨ Funcionalidades
 
-    Aplicar explicitamente os princípios SOLID.
+- ✅ **Autenticação segura** de usuários com hash de senhas
+- ✅ **Criação de tarefas** com título, descrição, prioridade e prazo
+- ✅ **Filtros avançados** (todas, pendentes, concluídas, por prioridade, atrasadas)
+- ✅ **Ordenação inteligente** (data, prioridade, status, alfabética)
+- ✅ **Marcação de tarefas** como concluídas
+- ✅ **Sistema de Undo/Redo** para operações
+- ✅ **Interface responsiva** com design moderno
+- ✅ **Estatísticas** de produtividade
+- ✅ **Atalhos de teclado** para navegação rápida
 
-    Garantir boas práticas de Clean Code.
+## 🏗️ Arquitetura: Clean Architecture
 
-    Implementar e justificar a utilização de ao menos 3 Padrões de Projeto GoF.
+O projeto segue rigorosamente os princípios da Clean Architecture:
 
-    Produzir documentação completa, diagramas UML e disponibilizar o código-fonte de forma organizada.
+```
+📁 domain/           # Camada de Domínio
+├── entities.py      # Entidades de negócio (Task, User)
+└── interfaces.py    # Contratos/Interfaces
+
+📁 application/      # Camada de Aplicação  
+├── commands.py      # Padrão Command
+├── strategies.py    # Padrão Strategy  
+└── use_cases.py     # Casos de uso
+
+📁 infrastructure/   # Camada de Infraestrutura
+├── database.py      # Configuração do banco (Singleton)
+├── repositories.py  # Implementações concretas
+└── password_service.py
+
+📁 presentation/     # Camada de Apresentação
+└── controllers.py   # Controladores Flask
+
+📁 templates/        # Interface de usuário
+└── static/         # Recursos estáticos
+```
+
+## 🔧 Padrões de Projeto GoF Implementados
+
+### 1. **Command Pattern**
+- **Localização**: `application/commands.py`
+- **Propósito**: Encapsula operações como objetos, permitindo undo/redo
+- **Classes**: `CreateTaskCommand`, `UpdateTaskCommand`, `CompleteTaskCommand`, `DeleteTaskCommand`, `CommandInvoker`
+
+### 2. **Strategy Pattern**
+- **Localização**: `application/strategies.py`
+- **Propósito**: Define família de algoritmos de filtro e ordenação
+- **Classes**: `FilterStrategy`, `SortStrategy`, `TaskFilterContext`, `TaskSortContext`
+
+### 3. **Singleton Pattern**
+- **Localização**: `infrastructure/database.py`
+- **Propósito**: Garante uma única instância da conexão com banco
+- **Classe**: `DatabaseConnection`
+
+### 4. **Factory Pattern**
+- **Localização**: `application/strategies.py`
+- **Propósito**: Cria estratégias baseadas em tipos
+- **Classes**: `FilterStrategyFactory`, `SortStrategyFactory`
+
+## 🧱 Princípios SOLID Aplicados
+
+### **S - Single Responsibility Principle**
+- Cada classe tem uma única responsabilidade bem definida
+- `TaskController` apenas gerencia requisições HTTP
+- `TaskRepository` apenas persiste dados
+- `CreateTaskUseCase` apenas cria tarefas
+
+### **O - Open/Closed Principle**
+- Sistema aberto para extensão, fechado para modificação
+- Novos filtros podem ser adicionados sem alterar código existente
+- Novas estratégias de ordenação são facilmente implementáveis
+
+### **L - Liskov Substitution Principle**
+- Implementações podem ser substituídas sem quebrar o sistema
+- `ITaskRepository` pode ter implementações SQLite, PostgreSQL, etc.
+- Estratégias são intercambiáveis
+
+### **I - Interface Segregation Principle**
+- Interfaces específicas para cada responsabilidade
+- `ITaskRepository`, `IUserRepository`, `IPasswordHasher` são separadas
+- Clientes dependem apenas das interfaces que usam
+
+### **D - Dependency Inversion Principle**
+- Dependência de abstrações, não implementações
+- `UseCase` → `IRepository` (não implementação concreta)
+- Injeção de dependência via `DependencyContainer`
 
 
-✅ Tema: Gerenciador de Tarefas CLI (ToDo App)
+## 💻 Tecnologias Utilizadas
 
-Descrição:
-Um programa de linha de comando onde o usuário pode:
+- **Backend**: Python 3.8+, Flask 3.0+
+- **Banco de Dados**: SQLite (SQLAlchemy ORM)
+- **Frontend**: HTML5, CSS3, JavaScript ES6+, Bootstrap 5.3
+- **Arquitetura**: Clean Architecture
+- **Padrões**: Command, Strategy, Singleton, Factory
+- **Princípios**: SOLID, Clean Code
 
-    Criar tarefas com título, descrição, prioridade e prazo.
+## 🚀 Como Executar
 
-    Listar tarefas (todas, pendentes, concluídas).
+### Pré-requisitos
+- Python 3.8 ou superior
+- pip (gerenciador de pacotes Python)
 
-    Marcar como concluída.
+### Método 1: Instalação Automática (Recomendado)
 
-    Remover tarefas.
-
-    Filtrar por prioridade ou data.
-
-📐 Arquitetura: Clean Architecture (ou MVC para simplificação)
-
-    Domain Layer: entidades como Tarefa, interfaces dos repositórios.
-
-    Application Layer: casos de uso (AdicionarTarefa, ListarTarefas, etc).
-
-    Infrastructure Layer: persistência simples em JSON ou SQLite.
-
-    Presentation Layer: CLI, interage com o usuário.
-
-🔧 Padrões de Projeto GoF Aplicáveis:
-
-    Command Pattern
-
-        Para encapsular comandos como "criar tarefa", "listar tarefas", etc.
-
-        Facilita a extensão e manutenção (Open/Closed Principle).
-
-    Strategy Pattern
-
-        Para estratégias de ordenação ou filtragem (por data, prioridade).
-
-    Singleton Pattern
-
-        Para o repositório de tarefas (uma única instância gerenciando os dados).
-
-🧱 Princípios SOLID na prática:
-
-    S (Single Responsibility): cada classe com uma única função: entidade, repositório, UI, etc.
-
-    O (Open/Closed): comandos e filtros podem ser estendidos sem mudar código existente.
-
-    L (Liskov): substituição de implementações de persistência ou filtragem sem quebrar o programa.
-
-    I (Interface Segregation): separar contratos como ITarefaRepository, ICommand.
-
-    D (Dependency Inversion): CLI depende de abstrações (ICommand, IRepository), não de implementações diretas.
-
-
-# Cadastro de Pessoas
-
-Uma aplicação web simples para cadastro e gerenciamento de pessoas, desenvolvida com Flask e PostgreSQL.
-
-## Funcionalidades
-
-- Cadastro de novos usuários
-- Validação de e-mail único
-- Listagem de todos os usuários cadastrados
-- Armazenamento persistente em banco de dados PostgreSQL
-
-## Tecnologias Utilizadas
-
-- Python 3
-- Flask
-- SQLAlchemy
-- PostgreSQL
-- HTML/CSS
-
-## Configuração do Ambiente
-
-1. Clone o repositório
-2. Crie um ambiente virtual:
+1. **Clone o repositório**:
    ```bash
-   python -m venv venv
+   git clone <repository-url>
+   cd Padroes-final
    ```
-3. Ative o ambiente virtual:
-   - Windows:
-     ```bash
-     .\venv\Scripts\activate
-     ```
-   - Linux/Mac:
+
+2. **Execute o setup automático**:
+   ```bash
+   ./setup.sh
+   ```
+
+3. **Inicie a aplicação**:
+   ```bash
+   ./start.sh
+   ```
+
+### Método 2: Instalação Manual
+
+1. **Clone o repositório**:
+   ```bash
+   git clone <repository-url>
+   cd Padroes-final
+   ```
+
+2. **Crie um ambiente virtual**:
+   ```bash
+   python3 -m venv venv
+   ```
+
+3. **Ative o ambiente virtual**:
+   - **Linux/Mac**:
      ```bash
      source venv/bin/activate
      ```
-4. Instale as dependências:
+   - **Windows**:
+     ```bash
+     .\venv\Scripts\activate
+     ```
+
+4. **Instale as dependências**:
    ```bash
    pip install -r requirements.txt
    ```
 
-## Executando a Aplicação
-
-1. Certifique-se de que o ambiente virtual está ativado
-2. Execute o comando:
+5. **Execute a aplicação**:
    ```bash
-   python app.py
+   python run.py
    ```
-3. Acesse a aplicação em `http://localhost:5000`
 
-## Estrutura do Projeto
+### Acesso à Aplicação
+Abra seu navegador e acesse: `http://localhost:5000`
 
+### Solução de Problemas
+
+**Problema: Aplicação para instantaneamente**
+- ✅ **Solução**: Use um ambiente virtual (venv)
+- ✅ **Comando**: `./setup.sh` seguido de `./start.sh`
+
+**Problema: Dependências não encontradas**
+- ✅ **Solução**: Instale as dependências no ambiente virtual
+- ✅ **Comando**: `pip install -r requirements.txt`
+
+**Problema: Python não encontrado**
+- ✅ **Solução**: Use `python3` em vez de `python`
+- ✅ **Comando**: `python3 run.py`
+
+**Problema: Contraste/Visibilidade ruim**
+- ✅ **Solução**: Melhorias de acessibilidade implementadas
+- ✅ **CSS adicional**: `contraste-forte.css` para cards de estatísticas
+- ✅ **Página de teste**: `verificar_contraste.html` para diagnóstico
+- ✅ **Detalhes**: Veja `ACESSIBILIDADE.md`
+- ✅ **Dica**: Force refresh (Ctrl+Shift+F5) para carregar novos estilos
+
+## 📱 Como Usar
+
+### 1. **Cadastro e Login**
+- Acesse a página inicial
+- Clique em "Cadastrar" para criar uma conta
+- Faça login com suas credenciais
+
+### 2. **Gerenciar Tarefas**
+- **Criar**: Clique em "Nova Tarefa" e preencha os campos
+- **Visualizar**: Use os filtros no dashboard para organizar suas tarefas
+- **Completar**: Marque o checkbox ao lado da tarefa
+- **Editar**: Clique no ícone de edição
+- **Excluir**: Clique no ícone de lixeira
+
+### 3. **Atalhos de Teclado**
+- `Ctrl + N`: Nova tarefa
+- `Ctrl + F`: Buscar
+- `Ctrl + Z`: Desfazer última ação
+- `1, 2, 3`: Filtros rápidos
+
+## 🎨 Clean Code Aplicado
+
+### **Nomenclatura Clara**
+```python
+# ❌ Ruim
+def calc(t, p):
+    return t * p
+
+# ✅ Bom  
+def calculate_task_priority_score(task: Task, priority_weight: float) -> float:
+    return task.complexity * priority_weight
 ```
-.
-├── app.py              # Arquivo principal da aplicação
-├── models/            # Modelos do banco de dados
-├── templates/         # Templates HTML
-├── static/           # Arquivos estáticos (CSS, JS)
-├── .env              # Variáveis de ambiente
-├── requirements.txt  # Dependências do projeto
-└── README.md         # Este arquivo
-``` 
+
+### **Funções Pequenas e Focadas**
+```python
+# ✅ Cada função tem uma única responsabilidade
+def create_task(self, title: str, description: str, priority: Priority, due_date: date, user_id: int) -> Task:
+    self._validate_task_data(title, due_date)
+    task = Task(title, description, priority, due_date, user_id)
+    return self._task_repository.save(task)
+
+def _validate_task_data(self, title: str, due_date: date) -> None:
+    if not title or len(title.strip()) == 0:
+        raise ValueError("Título da tarefa é obrigatório")
+    if due_date and due_date < date.today():
+        raise ValueError("Data de vencimento não pode ser no passado")
+```
+
+### **Evitando Duplicação (DRY)**
+```python
+# ✅ Factory centraliza a criação de estratégias
+class FilterStrategyFactory:
+    @staticmethod
+    def create_filter_strategy(filter_type: str) -> ITaskFilterStrategy:
+        strategies = {
+            'all': AllTasksFilterStrategy(),
+            'completed': CompletedTasksFilterStrategy(),
+            'pending': PendingTasksFilterStrategy()
+        }
+        return strategies.get(filter_type, AllTasksFilterStrategy())
+```
+
+## 📊 Benefícios da Arquitetura
+
+### **Testabilidade**
+- Dependências injetadas facilitam mocks e testes unitários
+- Lógica de negócio isolada de frameworks
+
+### **Manutenibilidade** 
+- Código organizado em camadas bem definidas
+- Mudanças em uma camada não afetam outras
+
+### **Flexibilidade**
+- Fácil troca de implementações (SQLite → PostgreSQL)
+- Novos recursos podem ser adicionados sem modificar código existente
+
+### **Escalabilidade**
+- Arquitetura preparada para crescimento
+- Separação clara de responsabilidades
+
+## 🧪 Exemplos de Extensibilidade
+
+### **Novo Filtro**
+```python
+class TodayTasksFilterStrategy(ITaskFilterStrategy):
+    def filter(self, tasks: List[Task]) -> List[Task]:
+        today = date.today()
+        return [task for task in tasks if task.due_date == today]
+```
+
+### **Nova Ordenação**
+```python
+class UrgencyLevelSortStrategy(ITaskSortStrategy):
+    def sort(self, tasks: List[Task]) -> List[Task]:
+        return sorted(tasks, key=lambda t: t.calculate_urgency_level())
+```
+
+### **Novo Comando**
+```python
+class ArchiveTaskCommand(ICommand):
+    def execute(self) -> Task:
+        task = self._task_repository.find_by_id(self._task_id)
+        task.archive()
+        return self._task_repository.update(task)
+```
+
+## 📈 Métricas de Qualidade
+
+- **Cobertura de Testes**: Preparado para testes unitários
+- **Complexidade Ciclomática**: Baixa devido a funções pequenas
+- **Acoplamento**: Baixo devido à inversão de dependência
+- **Coesão**: Alta - cada classe tem responsabilidade única
+
+## 🏆 Conclusão
+
+Este projeto demonstra a aplicação prática e efetiva de:
+
+- ✅ **Clean Architecture** com separação clara de camadas
+- ✅ **Padrões GoF** resolvendo problemas reais de design
+- ✅ **Princípios SOLID** garantindo código maintível e extensível  
+- ✅ **Clean Code** com código legível e bem estruturado
+- ✅ **Interface moderna** com excelente UX/UI
+
+O TaskFlow serve como exemplo de como conceitos teóricos de engenharia de software podem ser aplicados para criar sistemas robustos, escaláveis e de alta qualidade. 
     

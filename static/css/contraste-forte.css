@@ -1,0 +1,162 @@
+/* ===== CONTRASTE MÁXIMO PARA CARDS DE ESTATÍSTICAS ===== */
+
+/* Regras super específicas para forçar visibilidade nos cards */
+
+/* Card Total de Tarefas (Azul) */
+.card.border-0.shadow-sm.bg-primary.text-white.h-100 {
+    background: #667eea !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-primary.text-white.h-100 .card-body {
+    background: transparent !important;
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-primary.text-white.h-100 .card-title {
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-primary.text-white.h-100 h2,
+.card.border-0.shadow-sm.bg-primary.text-white.h-100 h6 {
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-primary.text-white.h-100 i,
+.card.border-0.shadow-sm.bg-primary.text-white.h-100 .fas {
+    color: #ffffff !important;
+}
+
+/* Card Concluídas (Verde) */
+.card.border-0.shadow-sm.bg-success.text-white.h-100 {
+    background: #38a169 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-success.text-white.h-100 .card-body {
+    background: transparent !important;
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-success.text-white.h-100 .card-title {
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-success.text-white.h-100 h2,
+.card.border-0.shadow-sm.bg-success.text-white.h-100 h6 {
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-success.text-white.h-100 i,
+.card.border-0.shadow-sm.bg-success.text-white.h-100 .fas {
+    color: #ffffff !important;
+}
+
+/* Card Pendentes (Amarelo) */
+.card.border-0.shadow-sm.bg-warning.text-white.h-100 {
+    background: #d69e2e !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-warning.text-white.h-100 .card-body {
+    background: transparent !important;
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-warning.text-white.h-100 .card-title {
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-warning.text-white.h-100 h2,
+.card.border-0.shadow-sm.bg-warning.text-white.h-100 h6 {
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-warning.text-white.h-100 i,
+.card.border-0.shadow-sm.bg-warning.text-white.h-100 .fas {
+    color: #ffffff !important;
+}
+
+/* Card Taxa de Conclusão (Azul Claro) */
+.card.border-0.shadow-sm.bg-info.text-white.h-100 {
+    background: #0987a0 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-info.text-white.h-100 .card-body {
+    background: transparent !important;
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-info.text-white.h-100 .card-title {
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-info.text-white.h-100 h2,
+.card.border-0.shadow-sm.bg-info.text-white.h-100 h6 {
+    color: #ffffff !important;
+}
+
+.card.border-0.shadow-sm.bg-info.text-white.h-100 i,
+.card.border-0.shadow-sm.bg-info.text-white.h-100 .fas {
+    color: #ffffff !important;
+}
+
+/* Progress bar dentro dos cards */
+.card.border-0.shadow-sm.bg-info.text-white.h-100 .progress {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.card.border-0.shadow-sm.bg-info.text-white.h-100 .progress-bar {
+    background-color: #ffffff !important;
+}
+
+/* Regra universal para todos os elementos dentro dos cards coloridos */
+.card.bg-primary *,
+.card.bg-success *,
+.card.bg-warning *,
+.card.bg-info * {
+    color: #ffffff !important;
+}
+
+/* Garantir que div flex também herdem a cor */
+.card.bg-primary .d-flex *,
+.card.bg-success .d-flex *,
+.card.bg-warning .d-flex *,
+.card.bg-info .d-flex * {
+    color: #ffffff !important;
+}
+
+/* Classe específica para elementos opacos */
+.card.bg-primary .opacity-75,
+.card.bg-success .opacity-75,
+.card.bg-warning .opacity-75,
+.card.bg-info .opacity-75 {
+    color: #ffffff !important;
+    opacity: 0.75 !important;
+}
+
+/* Fallback para qualquer classe Bootstrap que possa interferir */
+.text-white {
+    color: #ffffff !important;
+}
+
+.bg-primary {
+    background-color: #667eea !important;
+}
+
+.bg-success {
+    background-color: #38a169 !important;
+}
+
+.bg-warning {
+    background-color: #d69e2e !important;
+}
+
+.bg-info {
+    background-color: #0987a0 !important;
+} 

@@ -1,0 +1,444 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="display-6 fw-bold text-primary">
+                        {{ greeting }}, {{ current_user_email.split('@')[0] }}! 👋
+                    </h1>
+                    <p class="text-muted mb-0">Vamos organizar suas tarefas hoje?</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary" onclick="refreshStats()" title="Atualizar estatísticas">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <a href="{{ url_for('tasks.new_task_form') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Nova Tarefa
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm bg-primary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="card-title mb-0">Total de Tarefas</h6>
+                            <h2 class="fw-bold mb-0">{{ stats.total_tasks or 0 }}</h2>
+                        </div>
+                        <div class="ms-3">
+                            <i class="fas fa-tasks fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm bg-success text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="card-title mb-0">Concluídas</h6>
+                            <h2 class="fw-bold mb-0">{{ stats.completed_tasks or 0 }}</h2>
+                        </div>
+                        <div class="ms-3">
+                            <i class="fas fa-check-circle fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm bg-warning text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="card-title mb-0">Pendentes</h6>
+                            <h2 class="fw-bold mb-0">{{ stats.pending_tasks or 0 }}</h2>
+                        </div>
+                        <div class="ms-3">
+                            <i class="fas fa-clock fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm bg-info text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="card-title mb-0">Taxa de Conclusão</h6>
+                            <h2 class="fw-bold mb-0">{{ "%.0f"|format(stats.completion_rate or 0) }}%</h2>
+                        </div>
+                        <div class="ms-3">
+                            <i class="fas fa-chart-pie fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                    <div class="progress mt-2" style="height: 4px;">
+                        <div class="progress-bar bg-white" role="progressbar" 
+                             style="width: {{ stats.completion_rate or 0 }}%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters and Controls -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-filter me-2"></i>Filtros
+                            </h5>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-outline-secondary" onclick="showFilters()" title="Filtros Avançados">
+                                    <i class="fas fa-sliders-h"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="exportTasks()" title="Exportar Tarefas">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="showShortcuts()" title="Atalhos">
+                                    <i class="fas fa-keyboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter Buttons -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="{{ url_for('tasks.dashboard', filter='all') }}" 
+                                   class="btn btn-{{ 'primary' if filter == 'all' else 'outline-primary' }} btn-sm">
+                                    <i class="fas fa-list me-1"></i>Todas
+                                </a>
+                                <a href="{{ url_for('tasks.dashboard', filter='pending') }}" 
+                                   class="btn btn-{{ 'warning' if filter == 'pending' else 'outline-warning' }} btn-sm">
+                                    <i class="fas fa-clock me-1"></i>Pendentes
+                                </a>
+                                <a href="{{ url_for('tasks.dashboard', filter='completed') }}" 
+                                   class="btn btn-{{ 'success' if filter == 'completed' else 'outline-success' }} btn-sm">
+                                    <i class="fas fa-check me-1"></i>Concluídas
+                                </a>
+                                <a href="{{ url_for('tasks.dashboard', filter='in_progress') }}" 
+                                   class="btn btn-{{ 'info' if filter == 'in_progress' else 'outline-info' }} btn-sm">
+                                    <i class="fas fa-play me-1"></i>Em Progresso
+                                </a>
+                                <a href="{{ url_for('tasks.dashboard', filter='overdue') }}" 
+                                   class="btn btn-{{ 'danger' if filter == 'overdue' else 'outline-danger' }} btn-sm">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>Atrasadas
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sort Options -->
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label class="form-label small">Ordenar por:</label>
+                            <select class="form-select form-select-sm" id="sortSelect" onchange="applySorting()">
+                                <option value="creation_date" {{ 'selected' if sort == 'creation_date' else '' }}>Data de Criação</option>
+                                <option value="due_date" {{ 'selected' if sort == 'due_date' else '' }}>Data de Vencimento</option>
+                                <option value="priority" {{ 'selected' if sort == 'priority' else '' }}>Prioridade</option>
+                                <option value="alphabetical" {{ 'selected' if sort == 'alphabetical' else '' }}>Alfabética</option>
+                                <option value="status" {{ 'selected' if sort == 'status' else '' }}>Status</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small">Buscar:</label>
+                            <input type="text" class="form-control form-control-sm" id="searchInput" 
+                                   placeholder="Digite para buscar..." onkeyup="filterTasks()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tasks List -->
+    <div class="row">
+        <div class="col-12">
+            {% if tasks %}
+            <div id="tasksList">
+                {% for task in tasks %}
+                <div class="card mb-3 shadow-sm task-card {{ 'border-success' if task.is_completed() else 'border-start border-4' }}" 
+                     data-task-id="{{ task.id }}" 
+                     data-priority="{{ task.priority.value }}"
+                     data-status="{{ task.status.value }}"
+                     data-title="{{ task.title.lower() }}">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <div class="d-flex align-items-start">
+                                    <div class="form-check me-3">
+                                        <input class="form-check-input form-check-input-lg" type="checkbox" 
+                                               id="task-{{ task.id }}" 
+                                               {{ 'checked' if task.is_completed() else '' }}
+                                               onchange="toggleTask({{ task.id }})"
+                                               {{ 'disabled' if task.is_completed() else '' }}>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h5 class="card-title mb-1 {{ 'text-decoration-line-through text-muted' if task.is_completed() else '' }}">
+                                            {{ task.title }}
+                                        </h5>
+                                        {% if task.description %}
+                                        <p class="card-text text-muted small mb-2">{{ task.description }}</p>
+                                        {% endif %}
+                                        
+                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                            <!-- Priority Badge -->
+                                            <span class="badge bg-{{ 'danger' if task.priority.value == 'urgente' else 'warning' if task.priority.value == 'alta' else 'info' if task.priority.value == 'media' else 'secondary' }}">
+                                                <i class="fas fa-flag me-1"></i>{{ task.priority.value.title() }}
+                                            </span>
+                                            
+                                            <!-- Status Badge -->
+                                            <span class="badge bg-{{ 'success' if task.status.value == 'concluida' else 'primary' if task.status.value == 'em_progresso' else 'secondary' }}">
+                                                <i class="fas fa-{{ 'check' if task.status.value == 'concluida' else 'play' if task.status.value == 'em_progresso' else 'clock' }} me-1"></i>
+                                                {{ task.status.value.replace('_', ' ').title() }}
+                                            </span>
+                                            
+                                            <!-- Due Date -->
+                                            {% if task.due_date %}
+                                            <span class="badge bg-{{ 'danger' if task.is_overdue() else 'light text-dark' }}">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                {{ task.due_date.strftime('%d/%m/%Y') }}
+                                                {% if task.is_overdue() %}
+                                                <i class="fas fa-exclamation-triangle ms-1"></i>
+                                                {% endif %}
+                                            </span>
+                                            {% endif %}
+                                            
+                                            <!-- Created Date -->
+                                            <small class="text-muted">
+                                                <i class="fas fa-clock me-1"></i>
+                                                Criada em {{ task.created_at.strftime('%d/%m/%Y às %H:%M') }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 text-md-end">
+                                <div class="btn-group" role="group">
+                                    {% if not task.is_completed() %}
+                                    <button class="btn btn-outline-info btn-sm" onclick="markInProgress({{ task.id }})" title="Marcar como Em Progresso">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <a href="{{ url_for('tasks.edit_task_form', task_id=task.id) }}" 
+                                       class="btn btn-outline-secondary btn-sm" title="Editar Tarefa">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    {% endif %}
+                                    <button class="btn btn-outline-danger btn-sm" 
+                                            onclick="deleteTask({{ task.id }}, '{{ task.title }}')" title="Excluir Tarefa">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <div class="card border-0 bg-light">
+                    <div class="card-body py-5">
+                        <i class="fas fa-tasks fa-4x text-muted mb-4"></i>
+                        <h3 class="text-muted">Nenhuma tarefa encontrada</h3>
+                        <p class="text-muted">
+                            {% if filter != 'all' %}
+                            Não há tarefas com o filtro aplicado.
+                            <a href="{{ url_for('tasks.dashboard') }}" class="btn btn-link">Ver todas as tarefas</a>
+                            {% else %}
+                            Comece criando sua primeira tarefa!
+                            {% endif %}
+                        </p>
+                        <a href="{{ url_for('tasks.new_task_form') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Criar Primeira Tarefa
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Keyboard Shortcuts Modal -->
+<div class="modal fade" id="shortcutsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-keyboard me-2"></i>Atalhos do Teclado
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h6>Navegação</h6>
+                        <p><kbd>Ctrl</kbd> + <kbd>N</kbd> - Nova tarefa</p>
+                        <p><kbd>Ctrl</kbd> + <kbd>F</kbd> - Buscar</p>
+                        <p><kbd>Ctrl</kbd> + <kbd>Z</kbd> - Desfazer</p>
+                    </div>
+                    <div class="col-6">
+                        <h6>Filtros</h6>
+                        <p><kbd>1</kbd> - Todas</p>
+                        <p><kbd>2</kbd> - Pendentes</p>
+                        <p><kbd>3</kbd> - Concluídas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'n') {
+            e.preventDefault();
+            window.location.href = "{{ url_for('tasks.new_task_form') }}";
+        }
+        if (e.ctrlKey && e.key === 'f') {
+            e.preventDefault();
+            document.getElementById('searchInput').focus();
+        }
+        if (e.ctrlKey && e.key === 'z') {
+            e.preventDefault();
+            undoAction();
+        }
+        if (e.key >= '1' && e.key <= '3' && !e.ctrlKey && !e.target.matches('input, textarea')) {
+            const filters = ['all', 'pending', 'completed'];
+            window.location.href = `{{ url_for('tasks.dashboard') }}?filter=${filters[parseInt(e.key) - 1]}`;
+        }
+    });
+
+    // Toggle task completion
+    async function toggleTask(taskId) {
+        try {
+            const response = await fetch(`/tasks/${taskId}/complete`, { method: 'POST' });
+            const data = await response.json();
+            
+            if (data.success) {
+                showToast(data.message, 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.error, 'error');
+                const checkbox = document.getElementById(`task-${taskId}`);
+                checkbox.checked = !checkbox.checked;
+            }
+        } catch (error) {
+            showToast('Erro ao atualizar tarefa', 'error');
+            const checkbox = document.getElementById(`task-${taskId}`);
+            checkbox.checked = !checkbox.checked;
+        }
+    }
+
+    // Mark task as in progress (placeholder for future implementation)
+    function markInProgress(taskId) {
+        showToast('Funcionalidade em desenvolvimento', 'info');
+    }
+
+    // Delete task
+    async function deleteTask(taskId, taskTitle) {
+        if (!confirm(`Tem certeza que deseja excluir a tarefa "${taskTitle}"?`)) {
+            return;
+        }
+
+        try {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/tasks/${taskId}/delete`;
+            document.body.appendChild(form);
+            form.submit();
+        } catch (error) {
+            showToast('Erro ao excluir tarefa', 'error');
+        }
+    }
+
+    // Apply sorting
+    function applySorting() {
+        const sortValue = document.getElementById('sortSelect').value;
+        const currentUrl = new URL(window.location);
+        currentUrl.searchParams.set('sort', sortValue);
+        window.location.href = currentUrl.toString();
+    }
+
+    // Filter tasks (client-side)
+    function filterTasks() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const taskCards = document.querySelectorAll('.task-card');
+        
+        taskCards.forEach(card => {
+            const title = card.dataset.title;
+            const isVisible = title.includes(searchTerm);
+            card.style.display = isVisible ? 'block' : 'none';
+        });
+    }
+
+    // Refresh stats
+    async function refreshStats() {
+        try {
+            const response = await fetch('/tasks/api/stats');
+            const stats = await response.json();
+            showToast('Estatísticas atualizadas', 'success');
+        } catch (error) {
+            showToast('Erro ao atualizar estatísticas', 'error');
+        }
+    }
+
+    // Show shortcuts modal
+    function showShortcuts() {
+        const modal = new bootstrap.Modal(document.getElementById('shortcutsModal'));
+        modal.show();
+    }
+
+    // Export tasks (placeholder)
+    function exportTasks() {
+        showToast('Funcionalidade de exportação em desenvolvimento', 'info');
+    }
+
+    // Show advanced filters (placeholder)
+    function showFilters() {
+        showToast('Filtros avançados em desenvolvimento', 'info');
+    }
+
+    // Add smooth animations
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.task-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                card.style.transition = 'all 0.3s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    });
+</script>
+{% endblock %} 

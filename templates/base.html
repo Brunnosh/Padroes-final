@@ -3,87 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}HabitFlow{% endblock %}</title>
+    <title>{% block title %}TaskFlow - Gerenciador de Tarefas{% endblock %}</title>
     
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern.css') }}">
+    <!-- Contraste Forte CSS (para melhor visibilidade) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contraste-forte.css') }}">
     {% block extra_css %}{% endblock %}
 </head>
-<body>
-    <nav class="navbar">
+
+<body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
-                <i class="fas fa-check-circle text-primary me-2"></i>HabitFlow
+            <a class="navbar-brand fw-bold" href="{{ url_for('tasks.dashboard') }}">
+                <i class="fas fa-tasks me-2"></i>TaskFlow
             </a>
-            {% if session.get('user_id') %}
-            <div class="d-flex align-items-center">
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    {% if session.get('user_id') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('tasks.dashboard') }}">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('tasks.new_task_form') }}">
+                            <i class="fas fa-plus me-1"></i>Nova Tarefa
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
                 
-                <span class="navbar-text me-3">
-                    <i class="fas fa-user"></i>     {{ session.get('email') }}
-                </span>
-                <a class="btn btn-outline-secondary btn-sm me-2" href="{{ url_for('edit_profile') }}">
-                    <i class="fas fa-user-edit"></i> Editar Perfil
-                </a>
-                <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('logout') }}">
-                    <i class="fas fa-sign-out-alt"></i> Sair
-                </a>
+                <ul class="navbar-nav">
+                    {% if session.get('user_id') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-1"></i>{{ session.get('email') }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="undoAction()">
+                                <i class="fas fa-undo me-2"></i>Desfazer
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="redoAction()">
+                                <i class="fas fa-redo me-2"></i>Refazer
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Sair
+                            </a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Entrar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.register') }}">
+                            <i class="fas fa-user-plus me-1"></i>Cadastrar
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
-            {% endif %}
         </div>
     </nav>
 
-    <div class="container">
+    <!-- Flash Messages -->
+    <div class="container mt-3">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show">
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'info-circle' if category == 'info' else 'check-circle' }} me-2"></i>
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
-
-        {% block content %}{% endblock %}
     </div>
 
+    <!-- Main Content -->
+    <main class="container my-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white text-center py-3 mt-5">
+        <div class="container">
+            <p class="mb-0">TaskFlow - Sistema de Gerenciamento de Tarefas &copy; 2024</p>
+            <small>Desenvolvido com Clean Architecture, SOLID e Padrões GoF</small>
+        </div>
+    </footer>
+
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Dark Mode Toggle -->
+    <!-- Custom JavaScript -->
     <script>
+        // Funções para Undo/Redo
+        async function undoAction() {
+            try {
+                const response = await fetch('/tasks/undo', { method: 'POST' });
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    location.reload();
+                } else {
+                    showToast(data.message, 'warning');
+                }
+            } catch (error) {
+                showToast('Erro ao desfazer ação', 'error');
+            }
+        }
+
+        async function redoAction() {
+            try {
+                const response = await fetch('/tasks/redo', { method: 'POST' });
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    location.reload();
+                } else {
+                    showToast(data.message, 'warning');
+                }
+            } catch (error) {
+                showToast('Erro ao refazer ação', 'error');
+            }
+        }
+
+        // Sistema de notificações toast
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toast-container') || createToastContainer();
+            const toast = createToast(message, type);
+            toastContainer.appendChild(toast);
+            
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            
+            // Remove o toast após ser fechado
+            toast.addEventListener('hidden.bs.toast', () => {
+                toast.remove();
+            });
+        }
+
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            container.className = 'toast-container position-fixed top-0 end-0 p-3';
+            container.style.zIndex = '9999';
+            document.body.appendChild(container);
+            return container;
+        }
+
+        function createToast(message, type) {
+            const icons = {
+                success: 'fa-check-circle text-success',
+                error: 'fa-exclamation-triangle text-danger',
+                warning: 'fa-exclamation-circle text-warning',
+                info: 'fa-info-circle text-info'
+            };
+
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.setAttribute('role', 'alert');
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <i class="fas ${icons[type] || icons.info} me-2"></i>
+                    <strong class="me-auto">TaskFlow</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body">
+                    ${message}
+                </div>
+            `;
+            return toast;
+        }
+
+        // Confirmação de exclusão
+        function confirmDelete(event, itemName = 'este item') {
+            if (!confirm(`Tem certeza que deseja excluir ${itemName}?`)) {
+                event.preventDefault();
+                return false;
+            }
+            return true;
+        }
+
+        // Auto-hide alerts
         document.addEventListener('DOMContentLoaded', function() {
-            const toggle = document.getElementById('darkModeToggle');
-            const body = document.body;
-            const darkModeKey = 'darkModeEnabled';
-
-            // Load saved preference
-            const savedPreference = localStorage.getItem(darkModeKey);
-            if (savedPreference === 'true') {
-                body.classList.add('dark-mode');
-                if (toggle) toggle.checked = true;
-            }
-
-            // Toggle dark mode
-            if (toggle) {
-                toggle.addEventListener('change', function() {
-                    if (this.checked) {
-                        body.classList.add('dark-mode');
-                        localStorage.setItem(darkModeKey, 'true');
-                    } else {
-                        body.classList.remove('dark-mode');
-                        localStorage.setItem(darkModeKey, 'false');
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    if (alert.classList.contains('show')) {
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
                     }
-                });
-            }
+                }, 5000);
+            });
         });
     </script>
+    
     {% block extra_js %}{% endblock %}
 </body>
 </html> 
