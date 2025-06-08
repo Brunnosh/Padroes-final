@@ -1,0 +1,1 @@
+# Infrastructure Layer - Implementações Concretas de Persistência e Serviços Externos 

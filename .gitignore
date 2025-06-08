@@ -1,5 +1,7 @@
 # Environment variables
 .env
+.env.local
+.env.production
 
 # Python
 __pycache__/
@@ -27,16 +29,44 @@ wheels/
 # Virtual Environment
 venv/
 ENV/
+env/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+instance/
+tasks.db
 
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
+*~
 
 # OS
 .DS_Store
-Thumbs.db 
+Thumbs.db
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 
-#db
+# Logs
+*.log
+logs/
+
+# Flask
 instance/
+.webassets-cache
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/

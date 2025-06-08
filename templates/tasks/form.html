@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Editar' if task_id else 'Nova' }} Tarefa - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow border-0">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-{{ 'edit' if task_id else 'plus' }} me-2"></i>
+                    {{ 'Editar' if task_id else 'Nova' }} Tarefa
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('tasks.update_task', task_id=task_id) if task_id else url_for('tasks.create_task') }}" 
+                      class="needs-validation" novalidate>
+                    
+                    <!-- Title -->
+                    <div class="mb-4">
+                        <label for="title" class="form-label fw-bold">
+                            <i class="fas fa-heading me-2 text-primary"></i>Título da Tarefa *
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="title" name="title" 
+                               value="{{ title or '' }}" required maxlength="200"
+                               placeholder="Ex: Revisar relatório mensal">
+                        <div class="invalid-feedback">
+                            Por favor, insira um título para a tarefa.
+                        </div>
+                        <div class="form-text">
+                            <small><i class="fas fa-info-circle me-1"></i>Seja específico e claro sobre o que precisa ser feito.</small>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <label for="description" class="form-label fw-bold">
+                            <i class="fas fa-align-left me-2 text-primary"></i>Descrição
+                        </label>
+                        <textarea class="form-control" id="description" name="description" rows="4" 
+                                  placeholder="Descreva os detalhes da tarefa, objetivos e informações relevantes...">{{ description or '' }}</textarea>
+                        <div class="form-text">
+                            <small><i class="fas fa-lightbulb me-1"></i>Adicione contexto, requisitos ou observações importantes.</small>
+                        </div>
+                    </div>
+
+                    <!-- Priority and Due Date Row -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="priority" class="form-label fw-bold">
+                                <i class="fas fa-flag me-2 text-primary"></i>Prioridade *
+                            </label>
+                            <select class="form-select form-select-lg" id="priority" name="priority" required>
+                                <option value="">Selecione a prioridade</option>
+                                <option value="baixa" {{ 'selected' if priority == 'baixa' else '' }}>
+                                    🟢 Baixa
+                                </option>
+                                <option value="media" {{ 'selected' if priority == 'media' else '' }}>
+                                    🟡 Média
+                                </option>
+                                <option value="alta" {{ 'selected' if priority == 'alta' else '' }}>
+                                    🟠 Alta
+                                </option>
+                                <option value="urgente" {{ 'selected' if priority == 'urgente' else '' }}>
+                                    🔴 Urgente
+                                </option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Por favor, selecione uma prioridade.
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="due_date" class="form-label fw-bold">
+                                <i class="fas fa-calendar me-2 text-primary"></i>Data de Vencimento
+                            </label>
+                            <input type="date" class="form-control form-control-lg" id="due_date" name="due_date" 
+                                   value="{{ due_date or '' }}" min="{{ today }}">
+                            <div class="form-text">
+                                <small><i class="fas fa-clock me-1"></i>Quando a tarefa deve ser concluída?</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Priority Helper -->
+                    <div class="mb-4">
+                        <div class="card bg-light border-0">
+                            <div class="card-body p-3">
+                                <h6 class="card-title">
+                                    <i class="fas fa-question-circle me-2"></i>Como escolher a prioridade?
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="small mb-1"><strong>🔴 Urgente:</strong> Precisa ser feito hoje</p>
+                                        <p class="small mb-1"><strong>🟠 Alta:</strong> Importante, prazo próximo</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="small mb-1"><strong>🟡 Média:</strong> Importante, mas sem pressa</p>
+                                        <p class="small mb-0"><strong>🟢 Baixa:</strong> Pode ser feito quando sobrar tempo</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{{ url_for('tasks.dashboard') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Voltar
+                        </a>
+                        
+                        <div class="d-flex gap-2">
+                            {% if task_id %}
+                            <button type="button" class="btn btn-outline-danger" onclick="deleteCurrent()" title="Excluir Tarefa">
+                                <i class="fas fa-trash me-2"></i>Excluir
+                            </button>
+                            {% endif %}
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-{{ 'save' if task_id else 'plus' }} me-2"></i>
+                                {{ 'Salvar Alterações' if task_id else 'Criar Tarefa' }}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tips Card -->
+        <div class="card mt-4 border-0 bg-light">
+            <div class="card-body">
+                <h6 class="card-title">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>Dicas para Tarefas Eficazes
+                </h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled small">
+                            <li><i class="fas fa-check text-success me-2"></i>Use verbos de ação no título</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Seja específico sobre o resultado esperado</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Divida tarefas grandes em menores</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled small">
+                            <li><i class="fas fa-check text-success me-2"></i>Defina prazos realistas</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Inclua contexto na descrição</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Revise prioridades regularmente</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form validation
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            const forms = document.getElementsByClassName('needs-validation');
+            Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+    // Set minimum date to today
+    document.addEventListener('DOMContentLoaded', function() {
+        const dueDateInput = document.getElementById('due_date');
+        const today = new Date().toISOString().split('T')[0];
+        dueDateInput.setAttribute('min', today);
+        
+        // Focus on title field
+        document.getElementById('title').focus();
+    });
+
+    // Priority selection helper
+    document.getElementById('priority').addEventListener('change', function() {
+        const priority = this.value;
+        const helpTexts = {
+            'urgente': 'Tarefa crítica que deve ser concluída hoje',
+            'alta': 'Tarefa importante com prazo próximo',
+            'media': 'Tarefa importante, mas sem urgência',
+            'baixa': 'Tarefa que pode ser feita quando sobrar tempo'
+        };
+        
+        // You could show a tooltip or update help text here
+        if (priority && helpTexts[priority]) {
+            showToast(helpTexts[priority], 'info');
+        }
+    });
+
+    // Character counter for title
+    document.getElementById('title').addEventListener('input', function() {
+        const maxLength = 200;
+        const currentLength = this.value.length;
+        const remaining = maxLength - currentLength;
+        
+        // Update character counter (you could add a counter element)
+        if (remaining < 20) {
+            this.classList.add('border-warning');
+        } else {
+            this.classList.remove('border-warning');
+        }
+    });
+
+    // Auto-resize textarea
+    document.getElementById('description').addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+    });
+
+    // Delete current task (for edit mode)
+    function deleteCurrent() {
+        const taskId = {{ task_id or 'null' }};
+        if (taskId && confirm('Tem certeza que deseja excluir esta tarefa?')) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/tasks/${taskId}/delete`;
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Ctrl+S to save
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            document.querySelector('form').submit();
+        }
+        
+        // Escape to go back
+        if (e.key === 'Escape') {
+            window.location.href = "{{ url_for('tasks.dashboard') }}";
+        }
+    });
+
+    // Smart suggestions based on title (placeholder)
+    document.getElementById('title').addEventListener('input', debounce(function() {
+        const title = this.value.toLowerCase();
+        const suggestions = {
+            'reunião': { priority: 'alta', description: 'Preparar agenda e documentos necessários' },
+            'relatório': { priority: 'media', description: 'Compilar dados e análises' },
+            'email': { priority: 'baixa', description: 'Responder emails pendentes' },
+            'ligação': { priority: 'media', description: 'Agendar e preparar pontos a discutir' }
+        };
+
+        // Auto-suggest based on keywords
+        for (const keyword in suggestions) {
+            if (title.includes(keyword)) {
+                const suggestion = suggestions[keyword];
+                if (!document.getElementById('priority').value) {
+                    showToast(`Sugestão: Prioridade ${suggestion.priority}`, 'info');
+                }
+                if (!document.getElementById('description').value) {
+                    document.getElementById('description').placeholder = suggestion.description;
+                }
+                break;
+            }
+        }
+    }, 1000));
+
+    // Debounce function for performance
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+</script>
+{% endblock %} 
