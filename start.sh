@@ -24,5 +24,4 @@ echo "✅ Dependências verificadas"
 
 # Executar aplicação
 echo "🌟 Iniciando aplicação..."
-echo "💡 Se houver problemas de reinicialização, use: python dev.py"
-python run.py 
+python3 main.py 
